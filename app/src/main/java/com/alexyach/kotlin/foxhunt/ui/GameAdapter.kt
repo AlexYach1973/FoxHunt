@@ -40,7 +40,3 @@ class GameAdapter(
         }
     }
 }
-//
-//fun interface IClickItemAdapter {
-//    fun clickItemAdapter(field: ModelItemField)
-//}

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.alexyach.kotlin.foxhunt.databinding.FragmentGameBinding
 import com.alexyach.kotlin.foxhunt.model.ModelItemField
 
-class GameFragment : Fragment(), IClickItemAdapter {
+class GameFragment : Fragment() {
 
     private var _binding: FragmentGameBinding? = null
     private val binding: FragmentGameBinding
@@ -44,13 +44,13 @@ class GameFragment : Fragment(), IClickItemAdapter {
     private fun setAdapter(fieldList: List<ModelItemField>) {
         binding.gameField.layoutManager = GridLayoutManager(requireContext(),9)
 
-        adapter = GameAdapter(fieldList, this)
+        adapter = GameAdapter(fieldList) { field ->
+            Toast.makeText(requireContext(), "Item ${field.countFox}", Toast.LENGTH_SHORT).show()
+        }
         binding.gameField.adapter = adapter
     }
 
-    override fun clickItemAdapter(field: ModelItemField) {
-        Log.d("myLogs", "GameFragment listener: ${field.countFox}")
-    }
+
 
     private fun createFieldItem(): List<ModelItemField>{
         val dataList: MutableList<ModelItemField> = mutableListOf()
