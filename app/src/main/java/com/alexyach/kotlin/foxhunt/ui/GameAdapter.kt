@@ -1,10 +1,10 @@
 package com.alexyach.kotlin.foxhunt.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.alexyach.kotlin.foxhunt.R
 import com.alexyach.kotlin.foxhunt.databinding.ItemGameFieldBinding
 import com.alexyach.kotlin.foxhunt.model.ModelItemField
 
@@ -26,16 +26,25 @@ class GameAdapter(
         return dataList.size
     }
 
-    // ViewHolder
+    /** ViewHolder */
     inner class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemGameFieldBinding.bind(itemView)
 
-        fun bind(field: ModelItemField) {
-            binding.field.text = field.countFox.toString()
+        fun bind(dataField: ModelItemField) {
+
+            if (dataField.isFox) {
+                binding.field.setBackgroundResource(dataField.image)
+
+            } else if (dataField.countFox != 0) {
+                binding.field.text = dataField.countFox.toString()
+                binding.field.setBackgroundResource(R.color.purple_500)
+
+            } else {
+                binding.field.text = dataField.countFox.toString()
+            }
 
             binding.field.setOnClickListener {
-                listener.clickItemAdapter(field)
-                Log.d("myLogs", "Adapter listener: ${field.countFox}")
+                listener.clickItemAdapter(dataField)
             }
         }
     }

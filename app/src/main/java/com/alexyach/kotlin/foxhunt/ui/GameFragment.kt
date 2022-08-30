@@ -1,7 +1,6 @@
 package com.alexyach.kotlin.foxhunt.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ class GameFragment : Fragment() {
 
     private var _binding: FragmentGameBinding? = null
     private val binding: FragmentGameBinding
-    get() = _binding!!
+        get() = _binding!!
 
     private val viewModel: GameViewModel by lazy {
         ViewModelProvider(this)[GameViewModel::class.java]
@@ -35,32 +34,26 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /** Створюємо тестовий список*/
+        viewModel.createFieldGame()
 
-        setAdapter(createFieldItem())
+        viewModel.getFieldList().observe(viewLifecycleOwner) { fieldList ->
+            setAdapter(fieldList)
+        }
+
 
     }
 
     private fun setAdapter(fieldList: List<ModelItemField>) {
-        binding.gameField.layoutManager = GridLayoutManager(requireContext(),9)
+        binding.gameField.layoutManager = GridLayoutManager(requireContext(), 9)
 
         adapter = GameAdapter(fieldList) { field ->
-            Toast.makeText(requireContext(), "Item ${field.countFox}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "FOX: ${field.isFox}", Toast.LENGTH_SHORT).show()
         }
         binding.gameField.adapter = adapter
     }
 
 
 
-    private fun createFieldItem(): List<ModelItemField>{
-        val dataList: MutableList<ModelItemField> = mutableListOf()
-
-        for (i in 1..81) {
-            dataList.add(ModelItemField(countFox = 5, image = ""))
-        }
-
-        return dataList
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -70,7 +63,6 @@ class GameFragment : Fragment() {
     companion object {
         fun newInstance() = GameFragment()
     }
-
 
 
 }

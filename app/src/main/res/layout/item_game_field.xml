@@ -6,31 +6,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.button.MaterialButton
+    <!--<com.google.android.material.button.MaterialButton
         android:id="@+id/field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="5"
         app:cornerRadius="8dp"
         app:elevation="2dp"
-        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintDimensionRatio="0.9:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"/>-->
 
     <!--android:backgroundTint="@color/purple_500"
     android:text="@string/button_back"
     app:icon="@drawable/ic_arrow_back"-->
 
-   <!-- <TextView
+    <!--<androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@mipmap/ic_launcher"
+        android:background="@color/purple_700"
+        />-->
+
+    <TextView
         android:id="@+id/field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="28sp"
         android:gravity="center"
         tools:text="8"
+        android:textColor="@color/teal_200"
         android:padding="4dp"
+        android:background="@color/purple_700"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
