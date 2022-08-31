@@ -1,5 +1,6 @@
 package com.alexyach.kotlin.foxhunt.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexyach.kotlin.foxhunt.R
 import com.alexyach.kotlin.foxhunt.databinding.ItemGameFieldBinding
 import com.alexyach.kotlin.foxhunt.model.ModelItemField
+import com.alexyach.kotlin.foxhunt.model.StateField
 
 class GameAdapter(
     private val dataList: List<ModelItemField>,
@@ -32,19 +34,17 @@ class GameAdapter(
 
         fun bind(dataField: ModelItemField) {
 
-            if (dataField.isFox) {
+            if (dataField.modeView == StateField.NO_CLICK) {
                 binding.field.setBackgroundResource(dataField.image)
-
-            } else if (dataField.countFox != 0) {
-                binding.field.text = dataField.countFox.toString()
-                binding.field.setBackgroundResource(R.color.purple_500)
-
+            } else if (dataField.modeView == StateField.SIT_FOX) {
+                binding.field.setBackgroundResource(dataField.image)
             } else {
                 binding.field.text = dataField.countFox.toString()
+//                binding.field.setBackgroundResource(R.color.purple_500)
             }
 
             binding.field.setOnClickListener {
-                listener.clickItemAdapter(dataField)
+                listener.clickItemAdapter(adapterPosition)
             }
         }
     }

@@ -34,20 +34,45 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.createFieldGame()
-
+        /** Спостереження */
         viewModel.getFieldList().observe(viewLifecycleOwner) { fieldList ->
             setAdapter(fieldList)
+        }
+
+        viewModel.getIsWin().observe(viewLifecycleOwner) { isWin ->
+            showWin(isWin)
+        }
+
+        // Button Restart
+        binding.btnStart.setOnClickListener {
+            viewModel.restartGame()
         }
 
 
     }
 
+    private fun showWin(isWin: Boolean) {
+        if (isWin) {
+            binding.gameField.alpha = 0.35F
+            binding.gameField.isClickable = false
+            Toast.makeText(requireActivity(), "Гра закінчена !!!", Toast.LENGTH_SHORT).show()
+
+        } else {
+            binding.gameField.alpha = 1F
+            binding.gameField.isClickable = true
+        }
+    }
+
     private fun setAdapter(fieldList: List<ModelItemField>) {
         binding.gameField.layoutManager = GridLayoutManager(requireContext(), 9)
 
-        adapter = GameAdapter(fieldList) { field ->
-            Toast.makeText(requireContext(), "FOX: ${field.isFox}", Toast.LENGTH_SHORT).show()
+        adapter = GameAdapter(fieldList) { position ->
+
+            if (viewModel.getIsWin().value == true) return@GameAdapter
+
+            viewModel.action(position)
+
+            Toast.makeText(requireContext(), "FOX: ${position}", Toast.LENGTH_SHORT).show()
         }
         binding.gameField.adapter = adapter
     }

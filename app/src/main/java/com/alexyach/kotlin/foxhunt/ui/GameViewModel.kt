@@ -1,9 +1,11 @@
 package com.alexyach.kotlin.foxhunt.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.alexyach.kotlin.foxhunt.R
 import com.alexyach.kotlin.foxhunt.model.ModelItemField
+import com.alexyach.kotlin.foxhunt.model.StateField
 import kotlin.random.Random
 
 class GameViewModel : ViewModel() {
@@ -14,28 +16,78 @@ class GameViewModel : ViewModel() {
         return fieldListLiveDate
     }
 
+    // Прапорець закінтчення гри
+    private var isWin: MutableLiveData<Boolean> = MutableLiveData(false)
+    fun getIsWin():MutableLiveData<Boolean> {
+        return isWin
+    }
+
     private val dataList: MutableList<ModelItemField> = mutableListOf()
 
-    fun createFieldGame(){
+    init {
+        createFieldGame()
+    }
 
-        // Створення пустого списку
+    private fun createFieldGame(){
+        isWin.value = false
+
         for (i in 1..81) {
             dataList.add(ModelItemField())
         }
 
         // Встановлення лис
-        while (dataList.filter { it.isFox }.size < 5) {
-            val random = (0..80).random(Random(System.nanoTime()))
-            dataList[random].isFox = true
-            dataList[random].image = R.drawable.ic_fox
-
-            setCountFox(random)
-        }
+        createFox()
 
         fieldListLiveDate.value = dataList
     }
 
-    // Розміщення по полю countFox
+    fun restartGame() {
+        dataList.clear()
+
+        createFieldGame()
+    }
+
+    fun action(index: Int) {
+
+        if (dataList[index].modeView != StateField.NO_CLICK) return
+
+        if (dataList[index].isFox) {
+            dataList[index].modeView = StateField.SIT_FOX
+            dataList[index].image = R.drawable.ic_fox
+
+        } else {
+            dataList[index].modeView = StateField.COUNT_FOX
+        }
+
+        if (chekWin()) {
+            finishGame()
+        }
+
+        fieldListLiveDate.value = dataList
+
+    }
+
+    private fun chekWin(): Boolean {
+        return dataList.filter { it.modeView == StateField.SIT_FOX }.size == 5
+    }
+
+    private fun finishGame() {
+        isWin.value = true
+    }
+
+    // Встановлення лис
+    private fun createFox() {
+        while (dataList.filter { it.isFox }.size < 5) {
+            val random = (0..80).random(Random(System.nanoTime()))
+            dataList[random].isFox = true
+//            dataList[random].image = R.drawable.ic_fox
+
+            setCountFox(random)
+            Log.d("myLogs", "Fox: $random")
+        }
+    }
+
+    /** Розміщення по полю countFox - кількості лис, які видно з кожного поля */
     private fun setCountFox(index: Int) {
 //        val index = 40
 
