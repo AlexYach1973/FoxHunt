@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alexyach.kotlin.foxhunt.databinding.FragmentGameBinding
 import com.alexyach.kotlin.foxhunt.model.ModelItemField
+import com.alexyach.kotlin.foxhunt.ui.adapter.GameAdapter
+import com.alexyach.kotlin.foxhunt.ui.adapter.IClickItemAdapter
+import com.alexyach.kotlin.foxhunt.ui.adapter.ILongClickItemAdapter
 
 class GameFragment : Fragment() {
 
@@ -43,12 +46,15 @@ class GameFragment : Fragment() {
             showWin(isWin)
         }
 
+        viewModel.getCountStep().observe(viewLifecycleOwner) { step ->
+            binding.countStep.text = step.toString()
+        }
+        /** ------------- */
+
         // Button Restart
         binding.btnStart.setOnClickListener {
             viewModel.restartGame()
         }
-
-
     }
 
     private fun showWin(isWin: Boolean) {
@@ -63,21 +69,24 @@ class GameFragment : Fragment() {
         }
     }
 
+    /** Adapter */
     private fun setAdapter(fieldList: List<ModelItemField>) {
         binding.gameField.layoutManager = GridLayoutManager(requireContext(), 9)
+        adapter = GameAdapter(fieldList, listenerOneClick, listenerLongClick)
 
-        adapter = GameAdapter(fieldList) { position ->
-
-            if (viewModel.getIsWin().value == true) return@GameAdapter
-
-            viewModel.action(position)
-
-            Toast.makeText(requireContext(), "FOX: ${position}", Toast.LENGTH_SHORT).show()
-        }
         binding.gameField.adapter = adapter
     }
-
-
+    // Click
+    private var listenerOneClick = IClickItemAdapter { position ->
+        viewModel.checkMarkerNotFox(position)
+        adapter.notifyItemChanged(position)
+    }
+    // Long Click
+    private val listenerLongClick = ILongClickItemAdapter {position ->
+        viewModel.action(position)
+        adapter.notifyItemChanged(position)
+    }
+    /** ------------- */
 
 
     override fun onDestroy() {

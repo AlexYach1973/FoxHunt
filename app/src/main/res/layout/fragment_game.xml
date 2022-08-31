@@ -5,23 +5,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/yellow"
     tools:context=".ui.GameFragment">
+
 
     <TextView
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="AAAAAA"
+        android:text="@string/count_step"
+        android:textSize="22sp"
+        android:layout_margin="8dp"
+        android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/count_step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="55"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toEndOf="@id/tv"
+        app:layout_constraintTop_toTopOf="@id/tv"
+        app:layout_constraintBottom_toBottomOf="@id/tv"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Заново"
-        app:layout_constraintStart_toEndOf="@+id/tv"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="@string/restart_game"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toEndOf="@id/count_step"
+        app:layout_constraintTop_toTopOf="@id/count_step"
+        app:layout_constraintBottom_toBottomOf="@id/count_step"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/game_field"
@@ -31,13 +51,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_start"
         />
-
-    <!--<include
-        layout="@layout/game_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv"/>
--->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

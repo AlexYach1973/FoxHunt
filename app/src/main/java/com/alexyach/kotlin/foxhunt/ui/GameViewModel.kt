@@ -22,6 +22,11 @@ class GameViewModel : ViewModel() {
         return isWin
     }
 
+    private var countStep: MutableLiveData<Int> = MutableLiveData(0)
+    fun getCountStep(): MutableLiveData<Int> {
+        return countStep
+    }
+
     private val dataList: MutableList<ModelItemField> = mutableListOf()
 
     init {
@@ -43,6 +48,7 @@ class GameViewModel : ViewModel() {
 
     fun restartGame() {
         dataList.clear()
+        countStep.value = 0
 
         createFieldGame()
     }
@@ -62,8 +68,14 @@ class GameViewModel : ViewModel() {
         if (chekWin()) {
             finishGame()
         }
+        countStep.value = countStep.value?.plus(1)
 
-        fieldListLiveDate.value = dataList
+//        fieldListLiveDate.value = dataList
+    }
+
+    // Встановлення маркера notFox
+    fun checkMarkerNotFox(position: Int) {
+        dataList[position].markerNotFox = !dataList[position].markerNotFox
 
     }
 

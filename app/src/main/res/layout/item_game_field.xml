@@ -3,33 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!--<com.google.android.material.button.MaterialButton
-        android:id="@+id/field"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:text="5"
-        app:cornerRadius="8dp"
-        app:elevation="2dp"
-        app:layout_constraintDimensionRatio="0.9:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>-->
-
-    <!--android:backgroundTint="@color/purple_500"
-    android:text="@string/button_back"
-    app:icon="@drawable/ic_arrow_back"-->
-
-    <!--<androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@mipmap/ic_launcher"
-        android:background="@color/purple_700"
-        />-->
+<!--    android:background="@color/yellow"-->
+<!--    android:background="?attr/selectableItemBackground"-->
+<!--    android:animateLayoutChanges="true"-->
 
     <TextView
         android:id="@+id/field"
@@ -44,5 +24,16 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_not_fox"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_close"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/app_name" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
