@@ -4,13 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/drawable/border_item.xml" value="0.1" />
+        <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/drawable/ic_anim_day.xml" value="0.1" />
         <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/drawable/ic_fox.xml" value="0.2415" />
         <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/drawable/ic_not_pressed.xml" value="0.2415" />
         <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/layout/activity_main.xml" value="0.14444444444444443" />
         <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/layout/fragment_game.xml" value="0.25" />
         <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/layout/game_field.xml" value="0.33" />
-        <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/layout/item_game_field.xml" value="0.22" />
+        <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/layout/item_game_field.xml" value="0.1" />
         <entry key="..\:/Android-Studio-Projects/Kotlin/MyApplication/Games/FoxHunt/app/src/main/res/layout/itemgame_field.xml" value="0.14444444444444443" />
       </map>
     </option>

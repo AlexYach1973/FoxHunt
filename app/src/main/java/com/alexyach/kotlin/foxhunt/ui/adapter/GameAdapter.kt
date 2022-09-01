@@ -1,6 +1,5 @@
 package com.alexyach.kotlin.foxhunt.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +32,13 @@ class GameAdapter(
         private val binding = ItemGameFieldBinding.bind(itemView)
 
         fun bind(dataField: ModelItemField) {
+
+            /** TEST */
+           /* if (dataField.isFox) {
+                binding.field.setBackgroundResource(dataField.image)
+            } else {
+                binding.field.text = dataField.countFox.toString()
+            }*/
 
             if (dataField.markerNotFox) {
                 binding.imgNotFox.visibility = View.VISIBLE

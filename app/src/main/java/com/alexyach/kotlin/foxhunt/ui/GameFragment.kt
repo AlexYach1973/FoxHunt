@@ -59,7 +59,7 @@ class GameFragment : Fragment() {
 
     private fun showWin(isWin: Boolean) {
         if (isWin) {
-            binding.gameField.alpha = 0.35F
+//            binding.gameField.alpha = 0.35F
             binding.gameField.isClickable = false
             Toast.makeText(requireActivity(), "Гра закінчена !!!", Toast.LENGTH_SHORT).show()
 
