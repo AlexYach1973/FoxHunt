@@ -7,5 +7,5 @@ data class ModelItemField(
     var markerNotFox: Boolean = false,
     var countFox: Int = 0,
     var modeView: StateField = StateField.NO_CLICK,
-    var image: Int = R.drawable.ic_not_pressed
+    var image: Int = R.drawable.plant
 )

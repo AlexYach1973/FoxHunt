@@ -3,11 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@drawable/border_item"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+<!--    android:background="@drawable/border_item"-->
     <!--android:focusable="true"
     android:clickable="true"
     android:background="?attr/selectableItemBackground"-->
@@ -25,7 +24,7 @@
         android:gravity="center"
         tools:text="8"
         android:textStyle="bold"
-        android:textColor="@color/purple_700"
+        android:textColor="@color/number"
         android:padding="4dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"

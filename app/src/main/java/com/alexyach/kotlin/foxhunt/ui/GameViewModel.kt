@@ -59,7 +59,7 @@ class GameViewModel : ViewModel() {
 
         if (dataList[index].isFox) {
             dataList[index].modeView = StateField.SIT_FOX
-            dataList[index].image = R.drawable.ic_fox
+            dataList[index].image = R.drawable.fox_24
 
         } else {
             dataList[index].modeView = StateField.COUNT_FOX
