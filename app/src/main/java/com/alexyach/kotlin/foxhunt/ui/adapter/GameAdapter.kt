@@ -33,20 +33,13 @@ class GameAdapter(
 
         fun bind(dataField: ModelItemField) {
 
-            /** TEST */
-           /* if (dataField.isFox) {
-                binding.field.setBackgroundResource(dataField.image)
-            } else {
-                binding.field.text = dataField.countFox.toString()
-            }*/
-
             if (dataField.markerNotFox) {
                 binding.imgNotFox.visibility = View.VISIBLE
             } else {
                 binding.imgNotFox.visibility = View.GONE
             }
 
-            when (dataField.modeView) {
+            when (dataField.viewMode) {
 
                 StateField.NO_CLICK -> {
                     binding.field.setBackgroundResource(dataField.image)

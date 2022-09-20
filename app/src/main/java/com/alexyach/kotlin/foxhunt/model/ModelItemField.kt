@@ -6,6 +6,6 @@ data class ModelItemField(
     var isFox: Boolean = false,
     var markerNotFox: Boolean = false,
     var countFox: Int = 0,
-    var modeView: StateField = StateField.NO_CLICK,
+    var viewMode: StateField = StateField.NO_CLICK,
     var image: Int = R.drawable.plant
 )

@@ -55,14 +55,14 @@ class GameViewModel : ViewModel() {
 
     fun action(index: Int) {
 
-        if (dataList[index].modeView != StateField.NO_CLICK) return
+        if (dataList[index].viewMode != StateField.NO_CLICK) return
 
         if (dataList[index].isFox) {
-            dataList[index].modeView = StateField.SIT_FOX
+            dataList[index].viewMode = StateField.SIT_FOX
             dataList[index].image = R.drawable.fox_24
 
         } else {
-            dataList[index].modeView = StateField.COUNT_FOX
+            dataList[index].viewMode = StateField.COUNT_FOX
         }
 
         if (chekWin()) {
@@ -80,7 +80,7 @@ class GameViewModel : ViewModel() {
     }
 
     private fun chekWin(): Boolean {
-        return dataList.filter { it.modeView == StateField.SIT_FOX }.size == 5
+        return dataList.filter { it.viewMode == StateField.SIT_FOX }.size == 5
     }
 
     private fun finishGame() {
@@ -94,9 +94,13 @@ class GameViewModel : ViewModel() {
             dataList[random].isFox = true
 //            dataList[random].image = R.drawable.ic_fox
 
-            setCountFox(random)
             Log.d("myLogs", "Fox: $random")
         }
+
+        for (i in 0 until dataList.size) {
+            if (dataList[i].isFox) setCountFox(i)
+        }
+
     }
 
     /** Розміщення по полю countFox - кількості лис, які видно з кожного поля */
