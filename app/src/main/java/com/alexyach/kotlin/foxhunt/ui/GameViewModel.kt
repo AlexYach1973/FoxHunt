@@ -1,6 +1,5 @@
 package com.alexyach.kotlin.foxhunt.ui
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.alexyach.kotlin.foxhunt.R
@@ -18,14 +17,11 @@ class GameViewModel : ViewModel() {
 
     // Прапорець закінтчення гри
     private var isWin: MutableLiveData<Boolean> = MutableLiveData(false)
-    fun getIsWin():MutableLiveData<Boolean> {
-        return isWin
-    }
+    fun getIsWin():MutableLiveData<Boolean> = isWin
+
 
     private var countStep: MutableLiveData<Int> = MutableLiveData(0)
-    fun getCountStep(): MutableLiveData<Int> {
-        return countStep
-    }
+    fun getCountStep(): MutableLiveData<Int> = countStep
 
     private val dataList: MutableList<ModelItemField> = mutableListOf()
 
@@ -70,7 +66,6 @@ class GameViewModel : ViewModel() {
         }
         countStep.value = countStep.value?.plus(1)
 
-//        fieldListLiveDate.value = dataList
     }
 
     // Встановлення маркера notFox
@@ -92,9 +87,8 @@ class GameViewModel : ViewModel() {
         while (dataList.filter { it.isFox }.size < 5) {
             val random = (0..80).random(Random(System.nanoTime()))
             dataList[random].isFox = true
-//            dataList[random].image = R.drawable.ic_fox
 
-            Log.d("myLogs", "Fox: $random")
+//            Log.d("myLogs", "Fox: $random")
         }
 
         for (i in 0 until dataList.size) {
@@ -105,7 +99,6 @@ class GameViewModel : ViewModel() {
 
     /** Розміщення по полю countFox - кількості лис, які видно з кожного поля */
     private fun setCountFox(index: Int) {
-//        val index = 40
 
         // По вертикалі
         for (i in (index % 9)..80 step 9) {
