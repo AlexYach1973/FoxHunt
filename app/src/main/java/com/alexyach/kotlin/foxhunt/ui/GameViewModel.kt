@@ -1,23 +1,29 @@
 package com.alexyach.kotlin.foxhunt.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.alexyach.kotlin.foxhunt.R
 import com.alexyach.kotlin.foxhunt.model.ModelItemField
 import com.alexyach.kotlin.foxhunt.model.StateField
+import com.alexyach.kotlin.foxhunt.model.User
+import com.alexyach.kotlin.foxhunt.utils.UserDataStore
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class GameViewModel : ViewModel() {
 
     private var fieldListLiveDate: MutableLiveData<List<ModelItemField>> =
         MutableLiveData<List<ModelItemField>>()
+
     fun getFieldList(): MutableLiveData<List<ModelItemField>> {
         return fieldListLiveDate
     }
 
     // Прапорець закінтчення гри
     private var isWin: MutableLiveData<Boolean> = MutableLiveData(false)
-    fun getIsWin():MutableLiveData<Boolean> = isWin
+    fun getIsWin(): MutableLiveData<Boolean> = isWin
 
 
     private var countStep: MutableLiveData<Int> = MutableLiveData(0)
@@ -29,7 +35,7 @@ class GameViewModel : ViewModel() {
         createFieldGame()
     }
 
-    private fun createFieldGame(){
+    private fun createFieldGame() {
         isWin.value = false
 
         for (i in 1..81) {
@@ -72,6 +78,37 @@ class GameViewModel : ViewModel() {
     fun checkMarkerNotFox(position: Int) {
         dataList[position].markerNotFox = !dataList[position].markerNotFox
 
+    }
+
+    // Збереження DataStore
+    fun saveDataStore(userDataStore: UserDataStore, userPreferences: User) {
+//        countStep.value = countStep.value!! + 1
+
+        userPreferences.numberOfGame = userPreferences.numberOfGame + 1
+        userPreferences.sumNumberOfMoves = userPreferences.sumNumberOfMoves + countStep.value!! + 1
+
+        // Перша гра
+        if (userPreferences.maxNumberOfMoves == 0) {
+            userPreferences.maxNumberOfMoves = countStep.value!! + 1
+        }
+        if (userPreferences.minNumberOfMoves == 0) {
+            userPreferences.minNumberOfMoves = countStep.value!! + 1
+        }
+
+        if (countStep.value!! > userPreferences.maxNumberOfMoves) {
+            userPreferences.maxNumberOfMoves = countStep.value!! + 1
+        }
+        if (countStep.value!! < userPreferences.minNumberOfMoves) {
+            userPreferences.minNumberOfMoves = countStep.value!! + 1
+        }
+
+        userPreferences.meanNumberOfMoves = userPreferences.sumNumberOfMoves * 1.0 / userPreferences.numberOfGame
+
+        Log.d("myLogs", "userPreferences: ${userPreferences}" )
+
+        viewModelScope.launch {
+            userDataStore.saveUserPreferences(userPreferences)
+        }
     }
 
     private fun chekWin(): Boolean {

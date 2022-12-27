@@ -12,7 +12,7 @@ class GameAdapter(
     private val dataList: List<ModelItemField>,
     private val clickItem: IClickItemAdapter,
     private val longClickItem: ILongClickItemAdapter
-    ) : RecyclerView.Adapter<GameAdapter.GameViewHolder>() {
+) : RecyclerView.Adapter<GameAdapter.GameViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val binding = ItemGameFieldBinding.inflate(LayoutInflater.from(parent.context))
@@ -32,6 +32,7 @@ class GameAdapter(
         private val binding = ItemGameFieldBinding.bind(itemView)
 
         fun bind(dataField: ModelItemField) {
+
 
             if (dataField.markerNotFox) {
                 binding.imgNotFox.visibility = View.VISIBLE
@@ -66,6 +67,7 @@ class GameAdapter(
                 longClickItem.longClickItem(adapterPosition)
                 true
             }
+
         }
     }
 }

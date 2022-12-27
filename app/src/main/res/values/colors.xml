@@ -11,5 +11,10 @@
     <color name="crem">#FFFFCCFF</color>
     <color name="number">#FF339966</color>
     <color name="grass">#FFE4EADA</color>
+    <color name="green_number">#FF009933</color>
+    <color name="grey_number">#FF808080</color>
+    <color name="yellow_number">#FFFF9900</color>
+    <color name="red_number">#FFCC3300</color>
+
 
 </resources>
