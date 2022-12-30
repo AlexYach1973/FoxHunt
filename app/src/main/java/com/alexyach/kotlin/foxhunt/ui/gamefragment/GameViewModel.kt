@@ -1,14 +1,14 @@
-package com.alexyach.kotlin.foxhunt.ui
+package com.alexyach.kotlin.foxhunt.ui.gamefragment
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexyach.kotlin.foxhunt.R
-import com.alexyach.kotlin.foxhunt.model.ModelItemField
-import com.alexyach.kotlin.foxhunt.model.StateField
-import com.alexyach.kotlin.foxhunt.model.User
-import com.alexyach.kotlin.foxhunt.utils.UserDataStore
+import com.alexyach.kotlin.foxhunt.data.model.ModelItemField
+import com.alexyach.kotlin.foxhunt.data.model.StateField
+import com.alexyach.kotlin.foxhunt.data.model.User
+import com.alexyach.kotlin.foxhunt.data.datastore.UserDataStore
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 

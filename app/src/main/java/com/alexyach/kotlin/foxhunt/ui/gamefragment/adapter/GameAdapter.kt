@@ -1,12 +1,12 @@
-package com.alexyach.kotlin.foxhunt.ui.adapter
+package com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alexyach.kotlin.foxhunt.databinding.ItemGameFieldBinding
-import com.alexyach.kotlin.foxhunt.model.ModelItemField
-import com.alexyach.kotlin.foxhunt.model.StateField
+import com.alexyach.kotlin.foxhunt.data.model.ModelItemField
+import com.alexyach.kotlin.foxhunt.data.model.StateField
 
 class GameAdapter(
     private val dataList: List<ModelItemField>,

@@ -1,11 +1,12 @@
-package com.alexyach.kotlin.foxhunt.utils
+package com.alexyach.kotlin.foxhunt.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import com.alexyach.kotlin.foxhunt.model.User
+import com.alexyach.kotlin.foxhunt.data.model.User
+import com.alexyach.kotlin.foxhunt.utils.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grass"
-    tools:context=".ui.GameFragment">
+    tools:context=".ui.gamefragment.GameFragment">
 
     <LinearLayout
         android:id="@+id/ll_statistic"

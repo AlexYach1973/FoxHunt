@@ -1,4 +1,4 @@
-package com.alexyach.kotlin.foxhunt.model
+package com.alexyach.kotlin.foxhunt.data.model
 
 enum class StateField {
     NO_CLICK,

@@ -1,4 +1,4 @@
-package com.alexyach.kotlin.foxhunt.ui
+package com.alexyach.kotlin.foxhunt.ui.gamefragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +11,12 @@ import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alexyach.kotlin.foxhunt.R
 import com.alexyach.kotlin.foxhunt.databinding.FragmentGameBinding
-import com.alexyach.kotlin.foxhunt.model.ModelItemField
-import com.alexyach.kotlin.foxhunt.model.User
-import com.alexyach.kotlin.foxhunt.ui.adapter.GameAdapter
-import com.alexyach.kotlin.foxhunt.ui.adapter.IClickItemAdapter
-import com.alexyach.kotlin.foxhunt.ui.adapter.ILongClickItemAdapter
-import com.alexyach.kotlin.foxhunt.utils.UserDataStore
+import com.alexyach.kotlin.foxhunt.data.model.ModelItemField
+import com.alexyach.kotlin.foxhunt.data.model.User
+import com.alexyach.kotlin.foxhunt.ui.app.AppFoxHunt.Companion.getUserDataStore
+import com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter.GameAdapter
+import com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter.IClickItemAdapter
+import com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter.ILongClickItemAdapter
 
 class GameFragment : Fragment() {
 
@@ -39,7 +39,6 @@ class GameFragment : Fragment() {
         sumNumberOfMoves = 0,
         meanNumberOfMoves = 0.0
     )
-    private lateinit var userDataStore: UserDataStore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +51,6 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // DataStore
-        userDataStore = UserDataStore(requireContext())
         /** Спостереження DataStore*/
         dataStoreObserver()
 
@@ -127,7 +124,7 @@ class GameFragment : Fragment() {
         binding.gameField.adapter = adapter
     }
 
-    // Click
+    // Click for Adapter
     private var listenerOneClick = IClickItemAdapter { position ->
         if (isWin) {
             Toast.makeText(requireActivity(), "Гра закінчена !!!", Toast.LENGTH_SHORT).show()
@@ -137,7 +134,7 @@ class GameFragment : Fragment() {
         adapter.notifyItemChanged(position)
     }
 
-    // Long Click
+    // Long Click for Adapter
     private val listenerLongClick = ILongClickItemAdapter { position ->
         if (isWin) {
             Toast.makeText(requireActivity(), "Гра закінчена !!!", Toast.LENGTH_SHORT).show()
@@ -150,7 +147,7 @@ class GameFragment : Fragment() {
     /** ------------- */
 
     private fun dataStoreObserver() {
-        userDataStore.numberOfGameGameFlow.asLiveData().observe(viewLifecycleOwner) {
+        getUserDataStore().numberOfGameGameFlow.asLiveData().observe(viewLifecycleOwner) {
             userPreferences.numberOfGame = it
             val textShort = "${resources.getText(R.string.number_of_game_short)} $it"
             val textLong = "${resources.getText(R.string.number_of_game_long)} $it"
@@ -158,7 +155,7 @@ class GameFragment : Fragment() {
             binding.tvNumberOfGameShort.text = textShort
             binding.tvNumberOfGameLong.text = textLong
         }
-        userDataStore.minNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+        getUserDataStore().minNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
             userPreferences.minNumberOfMoves = it
             val textShort = "${resources.getText(R.string.min_number_of_game_short)} $it"
             val textLong = "${resources.getText(R.string.min_number_of_game_long)} $it"
@@ -166,7 +163,7 @@ class GameFragment : Fragment() {
             binding.tvMinNumberOfMovesShort.text = textShort
             binding.tvMinNumberOfMovesLong.text = textLong
         }
-        userDataStore.maxNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+        getUserDataStore().maxNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
             userPreferences.maxNumberOfMoves = it
             val textShort = "${resources.getText(R.string.max_number_of_game_short)} $it"
             val textLong = "${resources.getText(R.string.max_number_of_game_long)} $it"
@@ -174,10 +171,10 @@ class GameFragment : Fragment() {
             binding.tvMaxNumberOfMovesShort.text = textShort
             binding.tvMaxNumberOfMovesLong.text = textLong
         }
-        userDataStore.sumNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+        getUserDataStore().sumNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
             userPreferences.sumNumberOfMoves = it
         }
-        userDataStore.meanNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+        getUserDataStore().meanNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
             userPreferences.meanNumberOfMoves = it
             val textShort = "${resources.getText(R.string.mean_number_of_game_short)} ${String.format("%.1f", it)}"
             val textLong = "${resources.getText(R.string.mean_number_of_game_long)} ${String.format("%.1f", it)}"
@@ -189,7 +186,7 @@ class GameFragment : Fragment() {
 
 
     private fun saveDataStore() {
-        viewModel.saveDataStore(userDataStore, userPreferences)
+        viewModel.saveDataStore(getUserDataStore(), userPreferences)
     }
 
     override fun onDestroy() {
