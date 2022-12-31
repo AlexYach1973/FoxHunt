@@ -56,6 +56,7 @@ class GameViewModel : ViewModel() {
     }
 
     fun action(index: Int) {
+        countStep.value = countStep.value?.plus(1)
 
         if (dataList[index].viewMode != StateField.NO_CLICK) return
 
@@ -70,7 +71,6 @@ class GameViewModel : ViewModel() {
         if (chekWin()) {
             finishGame()
         }
-        countStep.value = countStep.value?.plus(1)
 
     }
 
@@ -82,30 +82,37 @@ class GameViewModel : ViewModel() {
 
     // Збереження DataStore
     fun saveDataStore(userDataStore: UserDataStore, userPreferences: User) {
-//        countStep.value = countStep.value!! + 1
 
         userPreferences.numberOfGame = userPreferences.numberOfGame + 1
-        userPreferences.sumNumberOfMoves = userPreferences.sumNumberOfMoves + countStep.value!! + 1
+        userPreferences.sumNumberOfMoves = userPreferences.sumNumberOfMoves + countStep.value!!
 
         // Перша гра
         if (userPreferences.maxNumberOfMoves == 0) {
-            userPreferences.maxNumberOfMoves = countStep.value!! + 1
+            userPreferences.maxNumberOfMoves = countStep.value!!
         }
         if (userPreferences.minNumberOfMoves == 0) {
-            userPreferences.minNumberOfMoves = countStep.value!! + 1
+            userPreferences.minNumberOfMoves = countStep.value!!
         }
 
+        // Встановлення макс/мін
         if (countStep.value!! > userPreferences.maxNumberOfMoves) {
-            userPreferences.maxNumberOfMoves = countStep.value!! + 1
+            userPreferences.maxNumberOfMoves = countStep.value!!
         }
         if (countStep.value!! < userPreferences.minNumberOfMoves) {
-            userPreferences.minNumberOfMoves = countStep.value!! + 1
+            userPreferences.minNumberOfMoves = countStep.value!!
         }
 
         userPreferences.meanNumberOfMoves = userPreferences.sumNumberOfMoves * 1.0 / userPreferences.numberOfGame
 
         Log.d("myLogs", "userPreferences: ${userPreferences}" )
 
+        viewModelScope.launch {
+            userDataStore.saveUserPreferences(userPreferences)
+        }
+    }
+
+    // Збереження ім'я
+    fun saveUserName(userDataStore: UserDataStore, userPreferences: User) {
         viewModelScope.launch {
             userDataStore.saveUserPreferences(userPreferences)
         }

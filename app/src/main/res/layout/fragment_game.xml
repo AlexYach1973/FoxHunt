@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint_layout"
@@ -10,50 +9,73 @@
     tools:context=".ui.gamefragment.GameFragment">
 
     <LinearLayout
+        android:id="@+id/ll_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_name"
+            style="@style/text_statistic_long"/>
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            style="@style/text_statistic_long"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Name" />
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/ll_statistic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/ll_user_name">
 
         <LinearLayout
             android:id="@+id/ll_statistic_short"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_statistic"
             android:layout_margin="4dp"
+            android:background="@drawable/border_statistic"
             android:visibility="visible">
 
             <TextView
                 android:id="@+id/tv_number_of_game_short"
+                style="@style/text_statistic_short"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/text_statistic_short"
                 tools:text="10" />
 
             <TextView
                 android:id="@+id/tv_min_number_of_moves_short"
+                style="@style/text_statistic_short"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/text_statistic_short"
                 android:textColor="@color/green_number"
                 tools:text="14" />
 
             <TextView
                 android:id="@+id/tv_max_number_of_moves_short"
+                style="@style/text_statistic_short"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/text_statistic_short"
                 android:textColor="@color/red_number"
                 tools:text="30" />
 
             <TextView
                 android:id="@+id/tv_mean_number_of_moves_short"
+                style="@style/text_statistic_short"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/text_statistic_short"
                 android:textColor="@color/yellow_number"
                 tools:text="20" />
         </LinearLayout>
@@ -62,36 +84,36 @@
             android:id="@+id/ll_statistic_long"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_statistic"
             android:layout_margin="4dp"
+            android:background="@drawable/border_statistic"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_number_of_game_long"
+                style="@style/text_statistic_long"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/text_statistic_long"
                 tools:text="10" />
 
             <TextView
                 android:id="@+id/tv_min_number_of_moves_long"
+                style="@style/text_statistic_long"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/text_statistic_long"
                 tools:text="14" />
 
             <TextView
                 android:id="@+id/tv_max_number_of_moves_long"
+                style="@style/text_statistic_long"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/text_statistic_long"
                 tools:text="30" />
 
             <TextView
                 android:id="@+id/tv_mean_number_of_moves_long"
+                style="@style/text_statistic_long"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/text_statistic_long"
                 tools:text="20" />
         </LinearLayout>
     </LinearLayout>
@@ -135,10 +157,50 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/game_field"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/count_step" />
 
+    <!--    Введення ім'я-->
+    <LinearLayout
+        android:id="@+id/enter_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/crem"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_enter_name"
+            style="@style/text_statistic_long"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/enter_name_text" />
+
+        <EditText
+            android:id="@+id/et_enter_name"
+            style="@style/text_statistic_long"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="text"
+            tools:text="@string/button_enter_name" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_enter_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/number"
+            android:gravity="center"
+            android:text="@string/button_enter_name"
+            tools:text="@string/button_enter_name" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,7 @@ class UserDataStore(private val context: Context) {
     // DataStore Preferences
     suspend fun saveUserPreferences(user: User) {
         context.dataStore.edit { preferences ->
+            preferences[NAME] = user.name
             preferences[NUMBER_OF_GAME] = user.numberOfGame
             preferences[MIN_NUMBER_OF_MOVES] = user.minNumberOfMoves
             preferences[MAX_NUMBER_OF_MOVES] = user.maxNumberOfMoves
@@ -28,6 +29,9 @@ class UserDataStore(private val context: Context) {
 
         }
     }
+
+    val userName: Flow<String> = context.dataStore.data
+        .map { it[NAME] ?: NAME_UNKNOWN }
 
     val numberOfGameGameFlow: Flow<Int> = context.dataStore.data
         .map { it[NUMBER_OF_GAME] ?: 0 }

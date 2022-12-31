@@ -17,6 +17,7 @@ import com.alexyach.kotlin.foxhunt.ui.app.AppFoxHunt.Companion.getUserDataStore
 import com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter.GameAdapter
 import com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter.IClickItemAdapter
 import com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter.ILongClickItemAdapter
+import com.alexyach.kotlin.foxhunt.utils.NAME_UNKNOWN
 
 class GameFragment : Fragment() {
 
@@ -33,6 +34,7 @@ class GameFragment : Fragment() {
     private var isWin = false
 
     private var userPreferences = User(
+        name = "",
         numberOfGame = 0,
         minNumberOfMoves = 0,
         maxNumberOfMoves = 0,
@@ -76,6 +78,77 @@ class GameFragment : Fragment() {
             viewModel.restartGame()
         }
 
+        // Button Enter name
+        binding.btnEnterName.setOnClickListener {
+            val name = binding.etEnterName.text.toString()
+
+            if (name.isEmpty()) {
+                Toast.makeText(requireContext(), "Пусте поле", Toast.LENGTH_SHORT).show()
+            } else {
+                userPreferences.name = name
+                viewModel.saveUserName(getUserDataStore(), userPreferences)
+                binding.enterNameLayout.visibility = View.GONE
+            }
+        }
+
+    }
+
+    private fun dataStoreObserver() {
+
+        getUserDataStore().userName.asLiveData().observe(viewLifecycleOwner) {
+//            val userName = "${resources.getText(R.string.user_name)} $it"
+            binding.tvUserName.text = it
+
+            if (it.equals(NAME_UNKNOWN)) {
+                showEnterNameLayout()
+                return@observe
+            }
+            userPreferences.name = it
+        }
+
+        getUserDataStore().numberOfGameGameFlow.asLiveData().observe(viewLifecycleOwner) {
+            userPreferences.numberOfGame = it
+            val textShort = "${resources.getText(R.string.number_of_game_short)} $it"
+            val textLong = "${resources.getText(R.string.number_of_game_long)} $it"
+
+            binding.tvNumberOfGameShort.text = textShort
+            binding.tvNumberOfGameLong.text = textLong
+        }
+
+        getUserDataStore().minNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+            userPreferences.minNumberOfMoves = it
+            val textShort = "${resources.getText(R.string.min_number_of_game_short)} $it"
+            val textLong = "${resources.getText(R.string.min_number_of_game_long)} $it"
+
+            binding.tvMinNumberOfMovesShort.text = textShort
+            binding.tvMinNumberOfMovesLong.text = textLong
+        }
+
+        getUserDataStore().maxNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+            userPreferences.maxNumberOfMoves = it
+            val textShort = "${resources.getText(R.string.max_number_of_game_short)} $it"
+            val textLong = "${resources.getText(R.string.max_number_of_game_long)} $it"
+
+            binding.tvMaxNumberOfMovesShort.text = textShort
+            binding.tvMaxNumberOfMovesLong.text = textLong
+        }
+
+        getUserDataStore().sumNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+            userPreferences.sumNumberOfMoves = it
+        }
+
+        getUserDataStore().meanNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+            userPreferences.meanNumberOfMoves = it
+            val textShort = "${resources.getText(R.string.mean_number_of_game_short)} ${String.format("%.1f", it)}"
+            val textLong = "${resources.getText(R.string.mean_number_of_game_long)} ${String.format("%.1f", it)}"
+
+            binding.tvMeanNumberOfMovesShort.text = textShort
+            binding.tvMeanNumberOfMovesLong.text = textLong
+        }
+    }
+
+    private fun showEnterNameLayout() {
+        binding.enterNameLayout.visibility = View.VISIBLE
     }
 
     private fun setColorCountStep(step: Int) {
@@ -145,45 +218,6 @@ class GameFragment : Fragment() {
     }
 
     /** ------------- */
-
-    private fun dataStoreObserver() {
-        getUserDataStore().numberOfGameGameFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.numberOfGame = it
-            val textShort = "${resources.getText(R.string.number_of_game_short)} $it"
-            val textLong = "${resources.getText(R.string.number_of_game_long)} $it"
-
-            binding.tvNumberOfGameShort.text = textShort
-            binding.tvNumberOfGameLong.text = textLong
-        }
-        getUserDataStore().minNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.minNumberOfMoves = it
-            val textShort = "${resources.getText(R.string.min_number_of_game_short)} $it"
-            val textLong = "${resources.getText(R.string.min_number_of_game_long)} $it"
-
-            binding.tvMinNumberOfMovesShort.text = textShort
-            binding.tvMinNumberOfMovesLong.text = textLong
-        }
-        getUserDataStore().maxNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.maxNumberOfMoves = it
-            val textShort = "${resources.getText(R.string.max_number_of_game_short)} $it"
-            val textLong = "${resources.getText(R.string.max_number_of_game_long)} $it"
-
-            binding.tvMaxNumberOfMovesShort.text = textShort
-            binding.tvMaxNumberOfMovesLong.text = textLong
-        }
-        getUserDataStore().sumNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.sumNumberOfMoves = it
-        }
-        getUserDataStore().meanNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.meanNumberOfMoves = it
-            val textShort = "${resources.getText(R.string.mean_number_of_game_short)} ${String.format("%.1f", it)}"
-            val textLong = "${resources.getText(R.string.mean_number_of_game_long)} ${String.format("%.1f", it)}"
-
-            binding.tvMeanNumberOfMovesShort.text = textShort
-            binding.tvMeanNumberOfMovesLong.text = textLong
-        }
-    }
-
 
     private fun saveDataStore() {
         viewModel.saveDataStore(getUserDataStore(), userPreferences)
