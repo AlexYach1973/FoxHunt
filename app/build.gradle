@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-//    id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
 }
@@ -11,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.alexyach.kotlin.foxhunt"
-        minSdk 23
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -26,6 +25,8 @@ android {
         }
     }
     compileOptions {
+        // AWS Support for Java 8 features
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -53,6 +54,23 @@ dependencies {
 
     // Preferences DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // AWS
+    // Support kotlin for AWS
+    implementation 'com.amplifyframework:core-kotlin:2.0.0'
+    // Необхідно викорстовувати:
+    // import com.amplifyframework.kotlin.core.Amplify
+    // ****************** //
+
+    // Support for Java 8 features
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.6'
+    // Amplify core dependency
+    implementation 'com.amplifyframework:core:2.0.0'
+    // DataStore
+    implementation 'com.amplifyframework:aws-datastore:2.0.0'
+    // DataStore's cloud synchronization
+    implementation 'com.amplifyframework:aws-api:2.0.0'
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

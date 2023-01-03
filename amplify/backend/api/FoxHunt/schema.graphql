@@ -1,0 +1,9 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  numberOfGame: Int
+  minNumberOfMoves: Int
+  maxNumberOfMoves: Int
+  sumNumberOfMoves: Int
+  meanNumberOfMoves: Float
+}

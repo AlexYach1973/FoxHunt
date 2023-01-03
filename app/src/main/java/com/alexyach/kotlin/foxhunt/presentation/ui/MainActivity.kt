@@ -1,10 +1,10 @@
-package com.alexyach.kotlin.foxhunt.ui
+package com.alexyach.kotlin.foxhunt.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.alexyach.kotlin.foxhunt.R
 import com.alexyach.kotlin.foxhunt.databinding.ActivityMainBinding
-import com.alexyach.kotlin.foxhunt.ui.gamefragment.GameFragment
+import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.GameFragment
 
 class MainActivity : AppCompatActivity() {
 

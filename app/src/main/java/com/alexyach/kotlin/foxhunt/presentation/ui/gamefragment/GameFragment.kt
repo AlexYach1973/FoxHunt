@@ -1,4 +1,4 @@
-package com.alexyach.kotlin.foxhunt.ui.gamefragment
+package com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,14 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alexyach.kotlin.foxhunt.R
-import com.alexyach.kotlin.foxhunt.databinding.FragmentGameBinding
 import com.alexyach.kotlin.foxhunt.data.model.ModelItemField
-import com.alexyach.kotlin.foxhunt.data.model.User
-import com.alexyach.kotlin.foxhunt.ui.app.AppFoxHunt.Companion.getUserDataStore
-import com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter.GameAdapter
-import com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter.IClickItemAdapter
-import com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter.ILongClickItemAdapter
+import com.alexyach.kotlin.foxhunt.data.model.UserModel
+import com.alexyach.kotlin.foxhunt.databinding.FragmentGameBinding
+import com.alexyach.kotlin.foxhunt.presentation.ui.app.AppFoxHunt.Companion.getUserDataStore
+import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.GameAdapter
+import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.IClickItemAdapter
+import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.ILongClickItemAdapter
 import com.alexyach.kotlin.foxhunt.utils.NAME_UNKNOWN
+
 
 class GameFragment : Fragment() {
 
@@ -33,7 +34,7 @@ class GameFragment : Fragment() {
     private lateinit var fieldList: List<ModelItemField>
     private var isWin = false
 
-    private var userPreferences = User(
+    private var userModelPreferences = UserModel(
         name = "",
         numberOfGame = 0,
         minNumberOfMoves = 0,
@@ -76,6 +77,10 @@ class GameFragment : Fragment() {
         // Button Restart
         binding.btnStart.setOnClickListener {
             viewModel.restartGame()
+
+            /**  TEST */
+            viewModel.readAllUsers()
+//            viewModel.readAllUsersFromAWSStorage()
         }
 
         // Button Enter name
@@ -85,10 +90,14 @@ class GameFragment : Fragment() {
             if (name.isEmpty()) {
                 Toast.makeText(requireContext(), "Пусте поле", Toast.LENGTH_SHORT).show()
             } else {
-                userPreferences.name = name
-                viewModel.saveUserName(getUserDataStore(), userPreferences)
+                userModelPreferences.name = name
+                viewModel.saveUserName(getUserDataStore(), userModelPreferences)
                 binding.enterNameLayout.visibility = View.GONE
+
+                // Одразу зберігаємо нового Usera в AWS
+                viewModel.saveNewUser(userModelPreferences)
             }
+
         }
 
     }
@@ -103,11 +112,11 @@ class GameFragment : Fragment() {
                 showEnterNameLayout()
                 return@observe
             }
-            userPreferences.name = it
+            userModelPreferences.name = it
         }
 
         getUserDataStore().numberOfGameGameFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.numberOfGame = it
+            userModelPreferences.numberOfGame = it
             val textShort = "${resources.getText(R.string.number_of_game_short)} $it"
             val textLong = "${resources.getText(R.string.number_of_game_long)} $it"
 
@@ -116,7 +125,7 @@ class GameFragment : Fragment() {
         }
 
         getUserDataStore().minNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.minNumberOfMoves = it
+            userModelPreferences.minNumberOfMoves = it
             val textShort = "${resources.getText(R.string.min_number_of_game_short)} $it"
             val textLong = "${resources.getText(R.string.min_number_of_game_long)} $it"
 
@@ -125,7 +134,7 @@ class GameFragment : Fragment() {
         }
 
         getUserDataStore().maxNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.maxNumberOfMoves = it
+            userModelPreferences.maxNumberOfMoves = it
             val textShort = "${resources.getText(R.string.max_number_of_game_short)} $it"
             val textLong = "${resources.getText(R.string.max_number_of_game_long)} $it"
 
@@ -134,11 +143,11 @@ class GameFragment : Fragment() {
         }
 
         getUserDataStore().sumNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.sumNumberOfMoves = it
+            userModelPreferences.sumNumberOfMoves = it
         }
 
         getUserDataStore().meanNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
-            userPreferences.meanNumberOfMoves = it
+            userModelPreferences.meanNumberOfMoves = it
             val textShort = "${resources.getText(R.string.mean_number_of_game_short)} ${String.format("%.1f", it)}"
             val textLong = "${resources.getText(R.string.mean_number_of_game_long)} ${String.format("%.1f", it)}"
 
@@ -152,13 +161,13 @@ class GameFragment : Fragment() {
     }
 
     private fun setColorCountStep(step: Int) {
-        if (step <= userPreferences.minNumberOfMoves) {
+        if (step <= userModelPreferences.minNumberOfMoves) {
             binding.countStep.setTextColor(resources.getColor(R.color.green_number, null))
 
-        } else if (step >= userPreferences.maxNumberOfMoves) {
+        } else if (step >= userModelPreferences.maxNumberOfMoves) {
             binding.countStep.setTextColor(resources.getColor(R.color.red_number, null))
 
-        } /*else if (step < userPreferences.maxNumberOfMoves) {
+        } /*else if (step < userModelPreferences.maxNumberOfMoves) {
             binding.countStep.setTextColor(resources.getColor(R.color.grey_number, null))
 
         } */else binding.countStep.setTextColor(resources.getColor(R.color.yellow_number, null))
@@ -216,11 +225,10 @@ class GameFragment : Fragment() {
         viewModel.action(position)
         adapter.notifyItemChanged(position)
     }
-
     /** ------------- */
 
     private fun saveDataStore() {
-        viewModel.saveDataStore(getUserDataStore(), userPreferences)
+        viewModel.saveDataStore(userModelPreferences)
     }
 
     override fun onDestroy() {
@@ -231,6 +239,5 @@ class GameFragment : Fragment() {
     companion object {
         fun newInstance() = GameFragment()
     }
-
 
 }

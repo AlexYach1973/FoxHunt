@@ -1,4 +1,4 @@
-package com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter
+package com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter
 
 import android.view.LayoutInflater
 import android.view.View

@@ -1,7 +1,7 @@
 package com.alexyach.kotlin.foxhunt.data.model
 
 /*@Parcelize*/
-data class User(
+data class UserModel(
     var name: String,
     var numberOfGame: Int,
     var minNumberOfMoves: Int,

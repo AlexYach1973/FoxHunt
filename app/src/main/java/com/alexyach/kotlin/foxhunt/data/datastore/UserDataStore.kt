@@ -5,7 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import com.alexyach.kotlin.foxhunt.data.model.User
+import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.utils.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -18,14 +18,14 @@ class UserDataStore(private val context: Context) {
     )
 
     // DataStore Preferences
-    suspend fun saveUserPreferences(user: User) {
+    suspend fun saveUserPreferences(userModel: UserModel) {
         context.dataStore.edit { preferences ->
-            preferences[NAME] = user.name
-            preferences[NUMBER_OF_GAME] = user.numberOfGame
-            preferences[MIN_NUMBER_OF_MOVES] = user.minNumberOfMoves
-            preferences[MAX_NUMBER_OF_MOVES] = user.maxNumberOfMoves
-            preferences[SUM_NUMBER_OF_MOVES] = user.sumNumberOfMoves
-            preferences[MEAN_NUMBER_OF_MOVES] = user.meanNumberOfMoves
+            preferences[NAME] = userModel.name
+            preferences[NUMBER_OF_GAME] = userModel.numberOfGame
+            preferences[MIN_NUMBER_OF_MOVES] = userModel.minNumberOfMoves
+            preferences[MAX_NUMBER_OF_MOVES] = userModel.maxNumberOfMoves
+            preferences[SUM_NUMBER_OF_MOVES] = userModel.sumNumberOfMoves
+            preferences[MEAN_NUMBER_OF_MOVES] = userModel.meanNumberOfMoves
 
         }
     }

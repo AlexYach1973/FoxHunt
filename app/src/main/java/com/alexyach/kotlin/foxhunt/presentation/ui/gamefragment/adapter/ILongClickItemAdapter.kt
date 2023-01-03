@@ -1,4 +1,4 @@
-package com.alexyach.kotlin.foxhunt.ui.gamefragment.adapter
+package com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter
 
 fun interface ILongClickItemAdapter {
     fun longClickItem(position: Int)
