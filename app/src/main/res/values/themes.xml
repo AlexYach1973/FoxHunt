@@ -37,4 +37,11 @@
         <item name="android:textColor">@color/grey_number</item>
     </style>
 
+    <style name="text_user_list">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:textColor">@color/grey_number</item>
+    </style>
+
 </resources>

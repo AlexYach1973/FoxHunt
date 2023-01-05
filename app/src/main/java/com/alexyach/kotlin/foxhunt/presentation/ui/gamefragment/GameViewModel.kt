@@ -1,16 +1,13 @@
 package com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexyach.kotlin.foxhunt.R
-import com.alexyach.kotlin.foxhunt.data.datastore.UserDataStore
 import com.alexyach.kotlin.foxhunt.data.model.ModelItemField
 import com.alexyach.kotlin.foxhunt.data.model.StateField
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.data.repository.AWSStorageCoroutinesImpl
-import com.alexyach.kotlin.foxhunt.data.repository.AWSStorageImpl
 import com.alexyach.kotlin.foxhunt.presentation.ui.app.AppFoxHunt
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -34,13 +31,8 @@ class GameViewModel : ViewModel() {
 
     private val dataList: MutableList<ModelItemField> = mutableListOf()
 
-    private val userList: MutableLiveData<List<UserModel>> = MutableLiveData()
-
     init {
         createFieldGame()
-
-        /**  TEST */
-        readAllUsers()
     }
 
     private fun createFieldGame() {
@@ -122,17 +114,6 @@ class GameViewModel : ViewModel() {
 
         // AWS
        updateUser(userModelPreferences)
-
-//        saveUserToAWSStorage(userModelPreferences)
-    }
-
-    // Збереження ім'я
-    fun saveUserName(userDataStore: UserDataStore, userModelPreferences: UserModel) {
-        viewModelScope.launch {
-            userDataStore.saveUserPreferences(userModelPreferences)
-        }
-
-
     }
 
     private fun chekWin(): Boolean {
@@ -217,36 +198,6 @@ class GameViewModel : ViewModel() {
         viewModelScope.launch {
             AWSStorageCoroutinesImpl().updateUser(userModel)
         }
-    }
-
-    fun readAllUsers() {
-        viewModelScope.launch {
-            val users = AWSStorageCoroutinesImpl().readAllUsers()
-            userList.postValue(users)
-
-            // Print
-            for (user in users) {
-                Log.d("myLogs", "ViewModel, users: $user")
-            }
-        }
-    }
-    fun saveNewUser(userModel: UserModel) {
-        viewModelScope.launch {
-            AWSStorageCoroutinesImpl().saveNewUser(userModel)
-        }
-    }
-
-    fun readAllUsersFromAWSStorage() {
-        viewModelScope.launch {
-            AWSStorageImpl().readAllUsers { useAWSrList ->
-                userList.postValue(useAWSrList)
-            }
-            Log.d("myLogs", "GameViewModel, userList: ${userList.value.toString()} ")
-        }
-    }
-
-    fun saveUserToAWSStorage(userModel: UserModel) {
-        AWSStorageImpl().saveUser(userModel)
     }
 
 }

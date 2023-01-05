@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.alexyach.kotlin.foxhunt.R
 import com.alexyach.kotlin.foxhunt.databinding.ActivityMainBinding
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.GameFragment
+import com.alexyach.kotlin.foxhunt.presentation.ui.registration.RegistrationFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
+                .add(R.id.container, RegistrationFragment.newInstance())
                 .add(R.id.container, GameFragment.newInstance())
                 .commit()
         }

@@ -72,32 +72,10 @@ class GameFragment : Fragment() {
             binding.countStep.text = step.toString()
             setColorCountStep(step)
         }
-        /** ------------- */
 
         // Button Restart
         binding.btnStart.setOnClickListener {
             viewModel.restartGame()
-
-            /**  TEST */
-            viewModel.readAllUsers()
-//            viewModel.readAllUsersFromAWSStorage()
-        }
-
-        // Button Enter name
-        binding.btnEnterName.setOnClickListener {
-            val name = binding.etEnterName.text.toString()
-
-            if (name.isEmpty()) {
-                Toast.makeText(requireContext(), "Пусте поле", Toast.LENGTH_SHORT).show()
-            } else {
-                userModelPreferences.name = name
-                viewModel.saveUserName(getUserDataStore(), userModelPreferences)
-                binding.enterNameLayout.visibility = View.GONE
-
-                // Одразу зберігаємо нового Usera в AWS
-                viewModel.saveNewUser(userModelPreferences)
-            }
-
         }
 
     }
@@ -105,14 +83,14 @@ class GameFragment : Fragment() {
     private fun dataStoreObserver() {
 
         getUserDataStore().userName.asLiveData().observe(viewLifecycleOwner) {
-//            val userName = "${resources.getText(R.string.user_name)} $it"
             binding.tvUserName.text = it
 
             if (it.equals(NAME_UNKNOWN)) {
-                showEnterNameLayout()
+                goToRegistrationFragment()
                 return@observe
             }
             userModelPreferences.name = it
+            showThisFragment()
         }
 
         getUserDataStore().numberOfGameGameFlow.asLiveData().observe(viewLifecycleOwner) {
@@ -154,10 +132,6 @@ class GameFragment : Fragment() {
             binding.tvMeanNumberOfMovesShort.text = textShort
             binding.tvMeanNumberOfMovesLong.text = textLong
         }
-    }
-
-    private fun showEnterNameLayout() {
-        binding.enterNameLayout.visibility = View.VISIBLE
     }
 
     private fun setColorCountStep(step: Int) {
@@ -230,6 +204,20 @@ class GameFragment : Fragment() {
     private fun saveDataStore() {
         viewModel.saveDataStore(userModelPreferences)
     }
+
+    private fun goToRegistrationFragment(){
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .hide(this)
+            .commit()
+    }
+
+    private fun showThisFragment() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .show(this)
+            .commit()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

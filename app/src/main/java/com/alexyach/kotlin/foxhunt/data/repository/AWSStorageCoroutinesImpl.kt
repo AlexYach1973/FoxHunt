@@ -2,6 +2,7 @@ package com.alexyach.kotlin.foxhunt.data.repository
 
 import android.util.Log
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
+import com.alexyach.kotlin.foxhunt.presentation.ui.StateResponse
 import com.alexyach.kotlin.foxhunt.utils.userAWSToUserModel
 import com.alexyach.kotlin.foxhunt.utils.usrModelToUserAWS
 import com.amplifyframework.core.model.query.Where
@@ -17,20 +18,23 @@ import kotlinx.coroutines.flow.onEach
 class AWSStorageCoroutinesImpl {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun readAllUsers(): List<UserModel> {
+    suspend fun readAllUsers(): StateResponse {
         val userList: MutableList<UserModel> = mutableListOf()
         // Сортировка по cередньому значенню
         val sortedBy = QueryField.field("meanNumberOfMoves")
 
         Amplify.DataStore.query(User::class, Where.sorted(sortedBy.ascending()))
-            .catch { error -> Log.d("myLogs", "DataStoreException: $error") }
+            .catch { error ->
+                     Log.d("myLogs", "DataStoreException: $error")
+//                StateResponse.ErrorResponse(error) ???
+            }
             .collect { userAws ->
                 userList.add(
                     userAWSToUserModel(userAws)
                 )
             }
 
-        return userList
+        return StateResponse.SuccessResponse(userList)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

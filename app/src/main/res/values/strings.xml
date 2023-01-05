@@ -18,7 +18,8 @@
     <string name="max_number_of_game_long">Максимальна кількість ходів:</string>
     <string name="mean_number_of_game_long">Середня кількість ходів:</string>
 
-<!--    Введення ім'я layout-->
+<!--    Registration fragment-->
     <string name="enter_name_text">Введить якесь унікальне ім\'я, щоб було не соромно</string>
     <string name="button_enter_name">Ок</string>
+    <string name="list_users">Зарєєстровані ігроки</string>
 </resources>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.registration.RegistrationFragment">
+
+    <LinearLayout
+        android:id="@+id/enter_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_enter_name"
+            style="@style/text_statistic_long"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/enter_name_text" />
+
+        <EditText
+            android:id="@+id/et_enter_name"
+            style="@style/text_statistic_long"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="text"
+            android:hint="Ім'я" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_enter_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/number"
+            android:gravity="center"
+            android:text="@string/button_enter_name"
+            tools:text="@string/button_enter_name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_list_users_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/enter_name_layout"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/item_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text_statistic_long"
+            android:layout_weight="6"
+            android:text="@string/user_name"/>
+
+        <TextView
+            android:id="@+id/item_user_number_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/text_statistic_long"
+            android:text="@string/number_of_game_short"/>
+        <TextView
+            android:id="@+id/item_user_min_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text_statistic_long"
+            android:layout_weight="1"
+            android:text="@string/min_number_of_game_short"/>
+        <TextView
+            android:id="@+id/item_user_max_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text_statistic_long"
+            android:layout_weight="1"
+            android:text="@string/max_number_of_game_short"/>
+        <TextView
+            android:id="@+id/item_user_mean_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text_statistic_long"
+            android:layout_weight="1"
+            android:text="@string/mean_number_of_game_short"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/grey_number"
+        app:layout_constraintTop_toBottomOf="@id/ll_list_users_title"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_all_users"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/view_line"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
