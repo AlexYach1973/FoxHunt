@@ -145,13 +145,25 @@
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         android:backgroundTint="@color/number"
         android:text="@string/restart_game"
         app:layout_constraintBottom_toBottomOf="@id/count_step"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_list_players"
         app:layout_constraintStart_toEndOf="@id/count_step"
         app:layout_constraintTop_toTopOf="@id/count_step" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_list_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:backgroundTint="@color/number"
+        android:text="@string/list_players"
+        app:layout_constraintBottom_toBottomOf="@id/btn_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_start"
+        app:layout_constraintTop_toTopOf="@id/btn_start" />
 
 
     <androidx.recyclerview.widget.RecyclerView

@@ -4,31 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alexyach.kotlin.foxhunt.R
-import com.alexyach.kotlin.foxhunt.data.model.ModelItemField
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.databinding.FragmentGameBinding
+import com.alexyach.kotlin.foxhunt.domain.model.ModelItemField
 import com.alexyach.kotlin.foxhunt.presentation.ui.app.AppFoxHunt.Companion.getUserDataStore
+import com.alexyach.kotlin.foxhunt.presentation.ui.base.BaseFragment
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.GameAdapter
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.IClickItemAdapter
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.ILongClickItemAdapter
+import com.alexyach.kotlin.foxhunt.presentation.ui.listplayers.ListPlayersFragment
 import com.alexyach.kotlin.foxhunt.utils.NAME_UNKNOWN
 
 
-class GameFragment : Fragment() {
+class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
 
-    private var _binding: FragmentGameBinding? = null
-    private val binding: FragmentGameBinding
-        get() = _binding!!
-
-    private val viewModel: GameViewModel by lazy {
+    override val viewModel: GameViewModel by lazy {
         ViewModelProvider(this)[GameViewModel::class.java]
     }
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentGameBinding.inflate(inflater, container, false)
 
     private lateinit var adapter: GameAdapter
     private lateinit var fieldList: List<ModelItemField>
@@ -42,14 +42,6 @@ class GameFragment : Fragment() {
         sumNumberOfMoves = 0,
         meanNumberOfMoves = 0.0
     )
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentGameBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,6 +68,11 @@ class GameFragment : Fragment() {
         // Button Restart
         binding.btnStart.setOnClickListener {
             viewModel.restartGame()
+        }
+
+        // Button List Players
+        binding.btnListPlayers.setOnClickListener {
+            goToListPlayersFragment()
         }
 
     }
@@ -160,7 +157,7 @@ class GameFragment : Fragment() {
             binding.llStatisticLong.visibility = View.VISIBLE
             binding.llStatisticShort.visibility = View.GONE
 
-            Toast.makeText(requireActivity(), "Гра закінчена !!!", Toast.LENGTH_SHORT).show()
+            toast("Гра закінчена !!!")
 
         } else {
             binding.gameField.alpha = 1F
@@ -183,7 +180,7 @@ class GameFragment : Fragment() {
     // Click for Adapter
     private var listenerOneClick = IClickItemAdapter { position ->
         if (isWin) {
-            Toast.makeText(requireActivity(), "Гра закінчена !!!", Toast.LENGTH_SHORT).show()
+            toast("Гра закінчена !!!")
             return@IClickItemAdapter
         }
         viewModel.checkMarkerNotFox(position)
@@ -193,7 +190,7 @@ class GameFragment : Fragment() {
     // Long Click for Adapter
     private val listenerLongClick = ILongClickItemAdapter { position ->
         if (isWin) {
-            Toast.makeText(requireActivity(), "Гра закінчена !!!", Toast.LENGTH_SHORT).show()
+            toast("Гра закінчена !!!")
             return@ILongClickItemAdapter
         }
         viewModel.action(position)
@@ -212,16 +209,20 @@ class GameFragment : Fragment() {
             .commit()
     }
 
+    private fun goToListPlayersFragment(){
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.container, ListPlayersFragment.newInstance(
+                userModelPreferences.name
+            ))
+            .commit()
+    }
+
     private fun showThisFragment() {
         requireActivity().supportFragmentManager.beginTransaction()
             .show(this)
             .commit()
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     companion object {

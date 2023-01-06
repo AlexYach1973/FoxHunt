@@ -2,6 +2,7 @@ package com.alexyach.kotlin.foxhunt.data.repository
 
 import android.util.Log
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
+import com.alexyach.kotlin.foxhunt.domain.repository.IAWSStorage
 import com.alexyach.kotlin.foxhunt.presentation.ui.StateResponse
 import com.alexyach.kotlin.foxhunt.utils.userAWSToUserModel
 import com.alexyach.kotlin.foxhunt.utils.usrModelToUserAWS
@@ -15,15 +16,13 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
-class AWSStorageCoroutinesImpl {
+class AWSStorageCoroutinesImpl: IAWSStorage {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun readAllUsers(): StateResponse {
+    override suspend fun readAllUsers(): StateResponse {
         val userList: MutableList<UserModel> = mutableListOf()
-        // Сортировка по cередньому значенню
-        val sortedBy = QueryField.field("meanNumberOfMoves")
 
-        Amplify.DataStore.query(User::class, Where.sorted(sortedBy.ascending()))
+        Amplify.DataStore.query(User::class)
             .catch { error ->
                      Log.d("myLogs", "DataStoreException: $error")
 //                StateResponse.ErrorResponse(error) ???
@@ -38,7 +37,28 @@ class AWSStorageCoroutinesImpl {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun updateUser(userModel: UserModel) {
+    override suspend fun readAllUsersSorted(sorted: String): StateResponse {
+        val userList: MutableList<UserModel> = mutableListOf()
+
+        // Сортировка по
+        val sortedBy = QueryField.field(sorted)
+
+        Amplify.DataStore.query(User::class, Where.sorted(sortedBy.ascending()))
+            .catch { error ->
+                Log.d("myLogs", "DataStoreException: $error")
+//                StateResponse.ErrorResponse(error) ???
+            }
+            .collect { userAws ->
+                userList.add(
+                    userAWSToUserModel(userAws)
+                )
+            }
+
+        return StateResponse.SuccessResponse(userList)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun updateUser(userModel: UserModel) {
         // Шукаемо по NAME
         val searchField = QueryField.field("User.name")
 
@@ -62,7 +82,7 @@ class AWSStorageCoroutinesImpl {
             .collect { Log.d("myLogs", "Update User: ${userModel.name}") }
     }
 
-    suspend fun saveNewUser(userModel: UserModel) {
+    override suspend fun saveNewUser(userModel: UserModel) {
         try {
            Amplify.DataStore.save(usrModelToUserAWS(userModel))
            Log.d("myLogs", "Save New Use: ${userModel.name}")
@@ -72,7 +92,8 @@ class AWSStorageCoroutinesImpl {
        }
     }
 
-    suspend fun deleteByName(name: String) {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun deleteByName(name: String) {
         val searchField = QueryField.field("User.name")
 
         Amplify.DataStore.query(User::class, Where.matches(searchField.eq(name)))
@@ -82,6 +103,7 @@ class AWSStorageCoroutinesImpl {
             .collect { Log.d("myLogs", "Delete al Users") }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun deleteAllUsers() {
         Amplify.DataStore.query(User::class)
             .catch { error -> Log.d("myLogs", "Query Exception: $error") }

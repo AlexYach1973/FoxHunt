@@ -1,4 +1,4 @@
-package com.alexyach.kotlin.foxhunt.data.model
+package com.alexyach.kotlin.foxhunt.domain.model
 
 import com.alexyach.kotlin.foxhunt.R
 

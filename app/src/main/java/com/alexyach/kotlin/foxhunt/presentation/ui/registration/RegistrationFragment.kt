@@ -1,28 +1,30 @@
 package com.alexyach.kotlin.foxhunt.presentation.ui.registration
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.databinding.FragmentRegistrationBinding
 import com.alexyach.kotlin.foxhunt.presentation.ui.StateResponse
+import com.alexyach.kotlin.foxhunt.presentation.ui.base.BaseFragment
 
-class RegistrationFragment : Fragment() {
+class RegistrationFragment : BaseFragment<FragmentRegistrationBinding,
+        RegistrationViewModel>() {
 
-    private var _binding: FragmentRegistrationBinding? = null
-    private val binding: FragmentRegistrationBinding
-    get() = _binding!!
-
-    private val viewModel: RegistrationViewModel by lazy {
+    override val viewModel: RegistrationViewModel by lazy {
         ViewModelProvider(this)[RegistrationViewModel::class.java]
     }
 
-    private lateinit var adapter: RegistrationAdapter
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentRegistrationBinding.inflate(inflater, container, false)
 
+
+    private lateinit var adapter: RegistrationAdapter
     private var newUser = UserModel(
         name = "",
         numberOfGame = 0,
@@ -31,17 +33,7 @@ class RegistrationFragment : Fragment() {
         sumNumberOfMoves = 0,
         meanNumberOfMoves = 0.0
     )
-
     private var userList: List<UserModel> = emptyList()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentRegistrationBinding.inflate(inflater, container, false)
-        return binding.root
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -34,6 +34,7 @@
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold|italic</item>
         <item name="android:layout_margin">8dp</item>
+<!--        <item name="android:textColor">@color/yellow_number</item>-->
         <item name="android:textColor">@color/grey_number</item>
     </style>
 
@@ -42,6 +43,15 @@
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:textColor">@color/grey_number</item>
+    </style>
+
+    <style name="text_list_players">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">@color/number</item>
+<!--        <item name="android:background">@drawable/border_item</item>-->
     </style>
 
 </resources>

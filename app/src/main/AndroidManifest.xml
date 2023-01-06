@@ -8,9 +8,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/fox_24"
+        android:icon="@drawable/fox_48"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/fox_24"
+        android:roundIcon="@drawable/fox_48"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoxHunt"
         tools:targetApi="31">

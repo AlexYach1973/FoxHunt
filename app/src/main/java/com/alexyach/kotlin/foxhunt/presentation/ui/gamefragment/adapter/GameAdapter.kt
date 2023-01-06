@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alexyach.kotlin.foxhunt.databinding.ItemGameFieldBinding
-import com.alexyach.kotlin.foxhunt.data.model.ModelItemField
-import com.alexyach.kotlin.foxhunt.data.model.StateField
+import com.alexyach.kotlin.foxhunt.domain.model.ModelItemField
+import com.alexyach.kotlin.foxhunt.domain.model.StateField
 
 class GameAdapter(
     private val dataList: List<ModelItemField>,

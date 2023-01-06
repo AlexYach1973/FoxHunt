@@ -4,13 +4,14 @@
 <!--    gameFragment-->
     <string name="user_name">Iгрок:</string>
     <string name="restart_game">ще раз</string>
+    <string name="list_players">Рекорди</string>
     <string name="count_step">Кількість ходів:</string>
 
 <!--    LinearLayout short statistic-->
-    <string name="number_of_game_short">к-сть:</string>
-    <string name="min_number_of_game_short">мін:</string>
-    <string name="max_number_of_game_short">макс:</string>
-    <string name="mean_number_of_game_short">середнє:</string>
+    <string name="number_of_game_short">к-сть</string>
+    <string name="min_number_of_game_short">мін</string>
+    <string name="max_number_of_game_short">макс</string>
+    <string name="mean_number_of_game_short">середнє</string>
 
     <!--    LinearLayout long statistic-->
     <string name="number_of_game_long">Кількість ігор:</string>
@@ -22,4 +23,7 @@
     <string name="enter_name_text">Введить якесь унікальне ім\'я, щоб було не соромно</string>
     <string name="button_enter_name">Ок</string>
     <string name="list_users">Зарєєстровані ігроки</string>
+
+<!--    List Players Fragment-->
+    <string name="list_players_fragment_title">Список ігроків</string>
 </resources>

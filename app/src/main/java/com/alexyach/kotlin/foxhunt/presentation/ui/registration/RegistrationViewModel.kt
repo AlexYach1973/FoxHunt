@@ -5,11 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.data.repository.AWSStorageCoroutinesImpl
+import com.alexyach.kotlin.foxhunt.domain.repository.IAWSStorage
 import com.alexyach.kotlin.foxhunt.presentation.ui.StateResponse
 import com.alexyach.kotlin.foxhunt.presentation.ui.app.AppFoxHunt
 import kotlinx.coroutines.launch
 
 class RegistrationViewModel : ViewModel() {
+
+    private val storage : IAWSStorage = AWSStorageCoroutinesImpl()
 
     private var stateResponse: MutableLiveData<StateResponse> =
         MutableLiveData<StateResponse>()
@@ -29,7 +32,7 @@ class RegistrationViewModel : ViewModel() {
 
     fun saveNewUserToAWS(userModel: UserModel) {
         viewModelScope.launch {
-            AWSStorageCoroutinesImpl().saveNewUser(userModel)
+            storage.saveNewUser(userModel)
         }
     }
 
@@ -37,7 +40,7 @@ class RegistrationViewModel : ViewModel() {
         stateResponse.value = StateResponse.Loading
 
         viewModelScope.launch {
-            stateResponse.postValue(AWSStorageCoroutinesImpl().readAllUsers())
+            stateResponse.postValue(storage.readAllUsers())
         }
     }
 
