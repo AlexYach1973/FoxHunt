@@ -4,20 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.databinding.FragmentListPlayersBinding
 import com.alexyach.kotlin.foxhunt.presentation.ui.StateResponse
 import com.alexyach.kotlin.foxhunt.presentation.ui.base.BaseFragment
 import com.alexyach.kotlin.foxhunt.utils.KEY_USER_NAME
 import com.alexyach.kotlin.foxhunt.utils.NAME_UNKNOWN
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListPlayersFragment : BaseFragment<FragmentListPlayersBinding,
         ListPlayersViewModel>() {
 
-    override val viewModel: ListPlayersViewModel by lazy {
+    // Створюємо через Koin
+    override val viewModel by viewModel<ListPlayersViewModel>()
+    /*override val viewModel: ListPlayersViewModel by lazy {
         ViewModelProvider(this)[ListPlayersViewModel::class.java]
-    }
+    }*/
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

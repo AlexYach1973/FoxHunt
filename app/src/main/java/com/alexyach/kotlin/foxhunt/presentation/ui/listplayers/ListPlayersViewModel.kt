@@ -3,11 +3,13 @@ package com.alexyach.kotlin.foxhunt.presentation.ui.listplayers
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexyach.kotlin.foxhunt.data.repository.AWSStorageCoroutinesImpl
+import com.alexyach.kotlin.foxhunt.domain.repository.IAWSStorage
 import com.alexyach.kotlin.foxhunt.presentation.ui.StateResponse
 import kotlinx.coroutines.launch
 
-class ListPlayersViewModel : ViewModel() {
+class ListPlayersViewModel(
+    private val storage: IAWSStorage
+    ) : ViewModel() {
 
     private var stateResponse: MutableLiveData<StateResponse> =
         MutableLiveData<StateResponse>()
@@ -23,7 +25,7 @@ class ListPlayersViewModel : ViewModel() {
         stateResponse.value = StateResponse.Loading
 
         viewModelScope.launch {
-            stateResponse.postValue(AWSStorageCoroutinesImpl().readAllUsers())
+            stateResponse.postValue(storage.readAllUsers())
         }
     }
 
@@ -31,7 +33,7 @@ class ListPlayersViewModel : ViewModel() {
         stateResponse.value = StateResponse.Loading
 
         viewModelScope.launch {
-            stateResponse.postValue(AWSStorageCoroutinesImpl().readAllUsersSorted(sort))
+            stateResponse.postValue(storage.readAllUsersSorted(sort))
         }
     }
 

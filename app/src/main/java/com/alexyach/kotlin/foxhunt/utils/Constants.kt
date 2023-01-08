@@ -16,6 +16,8 @@ val MAX_NUMBER_OF_MOVES = intPreferencesKey("maxNumberOfMoves")
 val SUM_NUMBER_OF_MOVES = intPreferencesKey("sumNumberOfMoves")
 val MEAN_NUMBER_OF_MOVES = doublePreferencesKey("meanNumberOfMoves")
 
+const val TAG = "myLogs"
+
 
 
 

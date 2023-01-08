@@ -1,22 +1,26 @@
 package com.alexyach.kotlin.foxhunt.presentation.ui.registration
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.databinding.FragmentRegistrationBinding
 import com.alexyach.kotlin.foxhunt.presentation.ui.StateResponse
 import com.alexyach.kotlin.foxhunt.presentation.ui.base.BaseFragment
+import com.alexyach.kotlin.foxhunt.utils.TAG
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegistrationFragment : BaseFragment<FragmentRegistrationBinding,
         RegistrationViewModel>() {
 
-    override val viewModel: RegistrationViewModel by lazy {
+    // Створюємо через Koin
+    override val viewModel by viewModel<RegistrationViewModel>()
+    /*override val viewModel: RegistrationViewModel by lazy {
         ViewModelProvider(this)[RegistrationViewModel::class.java]
-    }
+    }*/
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -109,7 +113,12 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding,
             .commit()
     }
 
-    companion object {
-        fun newInstance() = RegistrationFragment()
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "Registration Fragment onDestroy()")
     }
+
+    /*companion object {
+        fun newInstance() = RegistrationFragment()
+    }*/
 }

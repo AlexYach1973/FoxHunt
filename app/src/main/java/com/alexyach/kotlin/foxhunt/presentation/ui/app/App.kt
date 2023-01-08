@@ -2,17 +2,30 @@ package com.alexyach.kotlin.foxhunt.presentation.ui.app
 
 import android.app.Application
 import android.util.Log
-import com.alexyach.kotlin.foxhunt.data.datastore.UserDataStore
+import com.alexyach.kotlin.foxhunt.di.presentationModule
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.AWSDataStorePlugin
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.fragment.koin.fragmentFactory
+import org.koin.core.context.startKoin
 
-class AppFoxHunt: Application() {
+class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appFoxHunt = this
+
+        // Koin
+        startKoin {
+//            androidLogger(Level.DEBUG)
+            androidContext(this@App)
+            // setup a KoinFragmentFactory instance
+            fragmentFactory()
+            modules(presentationModule)
+        }
+
+//        appFoxHunt = this
 
         try {
             // DataStore's
@@ -30,17 +43,18 @@ class AppFoxHunt: Application() {
 
     companion object {
         // Context
-        private var appFoxHunt: AppFoxHunt? = null
-        fun getAppFoxHunt() = appFoxHunt!!
+//        private var appFoxHunt: App? = null
+//        fun getAppFoxHunt() = appFoxHunt!!
 
         // DataStore singleton
-        private var userDataStore: UserDataStore? = null
-        fun getUserDataStore(): UserDataStore {
+//        private var userDataStore: UserDataStore? = null
+
+       /* fun getUserDataStore(): UserDataStore {
             if (userDataStore == null) {
                 userDataStore = UserDataStore(getAppFoxHunt())
             }
             return userDataStore!!
-        }
+        }*/
     }
 
 }

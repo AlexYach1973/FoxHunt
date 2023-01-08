@@ -1,30 +1,40 @@
 package com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alexyach.kotlin.foxhunt.R
+import com.alexyach.kotlin.foxhunt.data.datastore.UserDataStore
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.databinding.FragmentGameBinding
 import com.alexyach.kotlin.foxhunt.domain.model.ModelItemField
-import com.alexyach.kotlin.foxhunt.presentation.ui.app.AppFoxHunt.Companion.getUserDataStore
 import com.alexyach.kotlin.foxhunt.presentation.ui.base.BaseFragment
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.GameAdapter
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.IClickItemAdapter
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.ILongClickItemAdapter
 import com.alexyach.kotlin.foxhunt.presentation.ui.listplayers.ListPlayersFragment
 import com.alexyach.kotlin.foxhunt.utils.NAME_UNKNOWN
+import com.alexyach.kotlin.foxhunt.utils.TAG
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
+class GameFragment(
+    private val dataStore: UserDataStore
+) : BaseFragment<FragmentGameBinding, GameViewModel>() {
 
-    override val viewModel: GameViewModel by lazy {
+    // Створюємо через Koin
+    override val viewModel by viewModel<GameViewModel>()
+
+    /*override val viewModel: GameViewModel by lazy {
         ViewModelProvider(this)[GameViewModel::class.java]
-    }
+    }*/
+
+//    private val dataStore: UserDataStore
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -33,6 +43,7 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
     private lateinit var adapter: GameAdapter
     private lateinit var fieldList: List<ModelItemField>
     private var isWin = false
+    private var gameEnd = false
 
     private var userModelPreferences = UserModel(
         name = "",
@@ -55,6 +66,11 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
             setAdapter(fieldList)
         }
 
+        viewModel.getGameEnd().observe(viewLifecycleOwner) { gameEnd ->
+            this.gameEnd = gameEnd
+            saveDataStore(gameEnd)
+        }
+
         viewModel.getIsWin().observe(viewLifecycleOwner) { isWin ->
             this.isWin = isWin
             showWin(isWin)
@@ -67,6 +83,7 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
 
         // Button Restart
         binding.btnStart.setOnClickListener {
+            gameEnd = false
             viewModel.restartGame()
         }
 
@@ -79,7 +96,7 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
 
     private fun dataStoreObserver() {
 
-        getUserDataStore().userName.asLiveData().observe(viewLifecycleOwner) {
+        dataStore.userName.asLiveData().observe(viewLifecycleOwner) {
             binding.tvUserName.text = it
 
             if (it.equals(NAME_UNKNOWN)) {
@@ -90,7 +107,7 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
             showThisFragment()
         }
 
-        getUserDataStore().numberOfGameGameFlow.asLiveData().observe(viewLifecycleOwner) {
+        dataStore.numberOfGameGameFlow.asLiveData().observe(viewLifecycleOwner) {
             userModelPreferences.numberOfGame = it
             val textShort = "${resources.getText(R.string.number_of_game_short)} $it"
             val textLong = "${resources.getText(R.string.number_of_game_long)} $it"
@@ -99,7 +116,7 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
             binding.tvNumberOfGameLong.text = textLong
         }
 
-        getUserDataStore().minNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+        dataStore.minNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
             userModelPreferences.minNumberOfMoves = it
             val textShort = "${resources.getText(R.string.min_number_of_game_short)} $it"
             val textLong = "${resources.getText(R.string.min_number_of_game_long)} $it"
@@ -108,7 +125,7 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
             binding.tvMinNumberOfMovesLong.text = textLong
         }
 
-        getUserDataStore().maxNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+        dataStore.maxNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
             userModelPreferences.maxNumberOfMoves = it
             val textShort = "${resources.getText(R.string.max_number_of_game_short)} $it"
             val textLong = "${resources.getText(R.string.max_number_of_game_long)} $it"
@@ -117,14 +134,16 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
             binding.tvMaxNumberOfMovesLong.text = textLong
         }
 
-        getUserDataStore().sumNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+        dataStore.sumNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
             userModelPreferences.sumNumberOfMoves = it
         }
 
-        getUserDataStore().meanNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
+        dataStore.meanNumberOfMovesFlow.asLiveData().observe(viewLifecycleOwner) {
             userModelPreferences.meanNumberOfMoves = it
-            val textShort = "${resources.getText(R.string.mean_number_of_game_short)} ${String.format("%.1f", it)}"
-            val textLong = "${resources.getText(R.string.mean_number_of_game_long)} ${String.format("%.1f", it)}"
+            val textShort = "${resources.getText(R.string.mean_number_of_game_short)} ${
+                String.format("%.1f", it)}"
+            val textLong = "${resources.getText(R.string.mean_number_of_game_long)} ${
+                String.format("%.1f", it)}"
 
             binding.tvMeanNumberOfMovesShort.text = textShort
             binding.tvMeanNumberOfMovesLong.text = textLong
@@ -141,14 +160,16 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
         } /*else if (step < userModelPreferences.maxNumberOfMoves) {
             binding.countStep.setTextColor(resources.getColor(R.color.grey_number, null))
 
-        } */else binding.countStep.setTextColor(resources.getColor(R.color.yellow_number, null))
+        } */ else binding.countStep.setTextColor(resources.getColor(R.color.yellow_number, null))
     }
 
     private fun showWin(isWin: Boolean) {
 
-        if (isWin) {
+        /*if (isWin && gameEnd) {
             saveDataStore()
+        }*/
 
+        if (isWin) {
             binding.gameField.alpha = 0.5F
             binding.gameField.scaleX = 0.75F
             binding.gameField.scaleY = 0.75F
@@ -198,24 +219,29 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
     }
     /** ------------- */
 
-    private fun saveDataStore() {
-        viewModel.saveDataStore(userModelPreferences)
+    private fun saveDataStore(gameEnd: Boolean) {
+        if (gameEnd) {
+            viewModel.saveDataStore(userModelPreferences)
+        }
+
     }
 
-    private fun goToRegistrationFragment(){
+    private fun goToRegistrationFragment() {
         requireActivity().supportFragmentManager
             .beginTransaction()
             .hide(this)
             .commit()
     }
 
-    private fun goToListPlayersFragment(){
+    private fun goToListPlayersFragment() {
         requireActivity().supportFragmentManager
             .beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.container, ListPlayersFragment.newInstance(
-                userModelPreferences.name
-            ))
+            .replace(
+                R.id.container, ListPlayersFragment.newInstance(
+                    userModelPreferences.name
+                )
+            )
             .commit()
     }
 
@@ -225,8 +251,9 @@ class GameFragment : BaseFragment<FragmentGameBinding, GameViewModel>() {
             .commit()
     }
 
-    companion object {
-        fun newInstance() = GameFragment()
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "Game Fragment onDestroy()")
     }
 
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.domain.repository.IAWSStorage
 import com.alexyach.kotlin.foxhunt.presentation.ui.StateResponse
+import com.alexyach.kotlin.foxhunt.utils.TAG
 import com.alexyach.kotlin.foxhunt.utils.userAWSToUserModel
 import com.alexyach.kotlin.foxhunt.utils.usrModelToUserAWS
 import com.amplifyframework.core.model.query.Where
@@ -24,7 +25,7 @@ class AWSStorageCoroutinesImpl: IAWSStorage {
 
         Amplify.DataStore.query(User::class)
             .catch { error ->
-                     Log.d("myLogs", "DataStoreException: $error")
+                     Log.d(TAG, "DataStoreException: $error")
 //                StateResponse.ErrorResponse(error) ???
             }
             .collect { userAws ->
@@ -45,7 +46,7 @@ class AWSStorageCoroutinesImpl: IAWSStorage {
 
         Amplify.DataStore.query(User::class, Where.sorted(sortedBy.ascending()))
             .catch { error ->
-                Log.d("myLogs", "DataStoreException: $error")
+                Log.d(TAG, "DataStoreException: $error")
 //                StateResponse.ErrorResponse(error) ???
             }
             .collect { userAws ->
@@ -66,7 +67,7 @@ class AWSStorageCoroutinesImpl: IAWSStorage {
             User::class,
             Where.matches(searchField.eq(userModel.name))
         )
-            .catch { error -> Log.d("myLogs", "saveNewUserOrUpdate(), Query Exception: $error") }
+            .catch { error -> Log.d(TAG, "saveNewUserOrUpdate(), Query Exception: $error") }
             .map {
                 it.copyOfBuilder()
 //                .name(userModel.name)
@@ -78,17 +79,17 @@ class AWSStorageCoroutinesImpl: IAWSStorage {
                     .build()
             }
             .onEach { Amplify.DataStore.save(it) }
-            .catch { error -> Log.d("myLogs", "Save Exception: $error") }
-            .collect { Log.d("myLogs", "Update User: ${userModel.name}") }
+            .catch { error -> Log.d(TAG, "Save Exception: $error") }
+            .collect { Log.d(TAG, "Update User: ${userModel.name}") }
     }
 
     override suspend fun saveNewUser(userModel: UserModel) {
         try {
            Amplify.DataStore.save(usrModelToUserAWS(userModel))
-           Log.d("myLogs", "Save New Use: ${userModel.name}")
+           Log.d(TAG, "AWSStorageCoroutinesImpl, Save New Use: ${userModel.name}")
 
        } catch (e: DataStoreException) {
-           Log.d("myLogs", "DataStoreException: $e")
+           Log.d(TAG, "DataStoreException: $e")
        }
     }
 
@@ -97,19 +98,19 @@ class AWSStorageCoroutinesImpl: IAWSStorage {
         val searchField = QueryField.field("User.name")
 
         Amplify.DataStore.query(User::class, Where.matches(searchField.eq(name)))
-            .catch { error -> Log.d("myLogs", "Query Exception: $error") }
+            .catch { error -> Log.d(TAG, "Query Exception: $error") }
             .onEach { Amplify.DataStore.delete(it) }
-            .catch { error -> Log.d("myLogs", "Delete failed: $error") }
-            .collect { Log.d("myLogs", "Delete al Users") }
+            .catch { error -> Log.d(TAG, "Delete failed: $error") }
+            .collect { Log.d(TAG, "Delete al Users") }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun deleteAllUsers() {
         Amplify.DataStore.query(User::class)
-            .catch { error -> Log.d("myLogs", "Query Exception: $error") }
+            .catch { error -> Log.d(TAG, "Query Exception: $error") }
             .onEach { Amplify.DataStore.delete(it) }
-            .catch { error -> Log.d("myLogs", "Delete failed: $error") }
-            .collect { Log.d("myLogs", "Delete al Users") }
+            .catch { error -> Log.d(TAG, "Delete failed: $error") }
+            .collect { Log.d(TAG, "Delete al Users") }
     }
 
 

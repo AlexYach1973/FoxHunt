@@ -3,18 +3,18 @@ package com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexyach.kotlin.foxhunt.domain.model.ModelItemField
+import com.alexyach.kotlin.foxhunt.data.datastore.UserDataStore
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
-import com.alexyach.kotlin.foxhunt.data.repository.AWSStorageCoroutinesImpl
 import com.alexyach.kotlin.foxhunt.domain.FoxHuntGame
+import com.alexyach.kotlin.foxhunt.domain.model.ModelItemField
 import com.alexyach.kotlin.foxhunt.domain.repository.IAWSStorage
-import com.alexyach.kotlin.foxhunt.presentation.ui.app.AppFoxHunt
 import kotlinx.coroutines.launch
 
-class GameViewModel : ViewModel() {
-
-    private val foxHuntGame = FoxHuntGame()
-    private val storage : IAWSStorage = AWSStorageCoroutinesImpl()
+class GameViewModel(
+    private val foxHuntGame: FoxHuntGame,
+    private val storage: IAWSStorage,
+    private val dataStore: UserDataStore
+) : ViewModel() {
 
     private var fieldListLiveDate: MutableLiveData<List<ModelItemField>> =
         MutableLiveData<List<ModelItemField>>()
@@ -23,9 +23,13 @@ class GameViewModel : ViewModel() {
         return fieldListLiveDate
     }
 
-    // Прапорець закінтчення гри
+    // Прапорець перемоги
     private var isWin: MutableLiveData<Boolean> = MutableLiveData(false)
     fun getIsWin(): MutableLiveData<Boolean> = isWin
+
+    // Прапорець закінтчення гри
+    private var gameEnd: MutableLiveData<Boolean> = MutableLiveData(false)
+    fun getGameEnd(): MutableLiveData<Boolean> = gameEnd
 
 
     private var countStep: MutableLiveData<Int> = MutableLiveData(0)
@@ -37,6 +41,7 @@ class GameViewModel : ViewModel() {
 
     private fun createFieldGame() {
         isWin.value = false
+        gameEnd.value = false
         fieldListLiveDate.value = foxHuntGame.createFox()
     }
 
@@ -65,6 +70,7 @@ class GameViewModel : ViewModel() {
 
     /** DataStore */
     fun saveDataStore(userModelPreferences: UserModel) {
+        gameEnd.value = false
 
         userModelPreferences.numberOfGame = userModelPreferences.numberOfGame + 1
         userModelPreferences.sumNumberOfMoves =
@@ -92,11 +98,11 @@ class GameViewModel : ViewModel() {
 //        Log.d("myLogs", "userModelPreferences: ${userModelPreferences}")
 
         viewModelScope.launch {
-            AppFoxHunt.getUserDataStore().saveUserPreferences(userModelPreferences)
+            dataStore.saveUserPreferences(userModelPreferences)
         }
 
         // AWS
-       updateUser(userModelPreferences)
+        updateUser(userModelPreferences)
     }
 
     private fun checkWin(): Boolean {
@@ -105,6 +111,7 @@ class GameViewModel : ViewModel() {
 
     private fun finishGame() {
         isWin.value = true
+        gameEnd.value = true
     }
 
     /** AWS  */
