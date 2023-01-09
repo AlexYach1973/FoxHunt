@@ -60,10 +60,6 @@ dependencies {
     implementation "io.insert-koin:koin-core:3.3.2"
     // Koin main features for Android
     implementation "io.insert-koin:koin-android:3.3.2"
-//    implementation "org.koin:koin-androidx-fragment:2.1.5"
-//    implementation "org.koin:koin-androidx-viewmodel:2.1.5"
-
-
 
     // AWS
     // Support kotlin for AWS

@@ -9,11 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserDataStore(private val dataStore: DataStore<Preferences>) {
-    // Create a DataStore instance using the preferencesDataStore delegate, with the Context as
-    // receiver.
-    /*private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-        name = USER_PREFERENCES_NAME
-    )*/
 
     // DataStore Preferences
     suspend fun saveUserPreferences(userModel: UserModel) {
@@ -29,8 +24,7 @@ class UserDataStore(private val dataStore: DataStore<Preferences>) {
     }
 
     val userName: Flow<String> = dataStore.data
-        .map { it[NAME] ?: NAME_UNKNOWN
-        }
+        .map { it[NAME] ?: NAME_UNKNOWN}
 
     val numberOfGameGameFlow: Flow<Int> = dataStore.data
         .map { it[NUMBER_OF_GAME] ?: 0 }
@@ -46,6 +40,5 @@ class UserDataStore(private val dataStore: DataStore<Preferences>) {
 
     val meanNumberOfMovesFlow: Flow<Double> = dataStore.data
         .map { it[MEAN_NUMBER_OF_MOVES] ?: 0.0 }
-
 
 }

@@ -12,8 +12,8 @@ class ListPlayersAdapter(private val playersList: List<UserModel>, private val c
 RecyclerView.Adapter<ListPlayersAdapter.ListPlayersViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListPlayersViewHolder {
-        val bindind = ItemListPlayersBinding.inflate(LayoutInflater.from(parent.context))
-        return ListPlayersViewHolder(bindind.root)
+        val binding = ItemListPlayersBinding.inflate(LayoutInflater.from(parent.context))
+        return ListPlayersViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ListPlayersViewHolder, position: Int) {

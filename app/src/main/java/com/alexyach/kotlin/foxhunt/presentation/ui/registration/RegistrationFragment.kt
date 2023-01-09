@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.alexyach.kotlin.foxhunt.data.model.UserModel
 import com.alexyach.kotlin.foxhunt.databinding.FragmentRegistrationBinding
 import com.alexyach.kotlin.foxhunt.presentation.ui.StateResponse
@@ -18,9 +17,6 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding,
 
     // Створюємо через Koin
     override val viewModel by viewModel<RegistrationViewModel>()
-    /*override val viewModel: RegistrationViewModel by lazy {
-        ViewModelProvider(this)[RegistrationViewModel::class.java]
-    }*/
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -62,19 +58,18 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding,
 
     private fun validateEnteredName(name: String): Boolean {
         if (name.isEmpty()) {
-            Toast.makeText(requireContext(), "Пусте поле", Toast.LENGTH_SHORT).show()
+            toast("Пусте поле")
             return false
         }
         if (userList.isEmpty()) {
-            Toast.makeText(requireContext(), "Пустий список ігроків - Ви перший", Toast.LENGTH_SHORT).show()
+            toast("Пустий список ігроків - Ви перший")
             return true
         }
 
         if (userList.map { it.name }.contains(name)) {
-            Toast.makeText(requireContext(), "Ігрок вже існує", Toast.LENGTH_SHORT).show()
+            toast("Ігрок вже існує")
             return false
         }
-
         return true
     }
 
@@ -117,8 +112,4 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding,
         super.onDestroy()
         Log.d(TAG, "Registration Fragment onDestroy()")
     }
-
-    /*companion object {
-        fun newInstance() = RegistrationFragment()
-    }*/
 }

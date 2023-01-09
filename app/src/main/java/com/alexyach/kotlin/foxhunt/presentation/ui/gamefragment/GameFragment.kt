@@ -17,8 +17,7 @@ import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.GameAdap
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.IClickItemAdapter
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.adapter.ILongClickItemAdapter
 import com.alexyach.kotlin.foxhunt.presentation.ui.listplayers.ListPlayersFragment
-import com.alexyach.kotlin.foxhunt.utils.NAME_UNKNOWN
-import com.alexyach.kotlin.foxhunt.utils.TAG
+import com.alexyach.kotlin.foxhunt.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -28,12 +27,6 @@ class GameFragment(
 
     // Створюємо через Koin
     override val viewModel by viewModel<GameViewModel>()
-
-    /*override val viewModel: GameViewModel by lazy {
-        ViewModelProvider(this)[GameViewModel::class.java]
-    }*/
-
-//    private val dataStore: UserDataStore
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -91,11 +84,9 @@ class GameFragment(
         binding.btnListPlayers.setOnClickListener {
             goToListPlayersFragment()
         }
-
     }
 
     private fun dataStoreObserver() {
-
         dataStore.userName.asLiveData().observe(viewLifecycleOwner) {
             binding.tvUserName.text = it
 
@@ -164,11 +155,6 @@ class GameFragment(
     }
 
     private fun showWin(isWin: Boolean) {
-
-        /*if (isWin && gameEnd) {
-            saveDataStore()
-        }*/
-
         if (isWin) {
             binding.gameField.alpha = 0.5F
             binding.gameField.scaleX = 0.75F
@@ -179,7 +165,6 @@ class GameFragment(
             binding.llStatisticShort.visibility = View.GONE
 
             toast("Гра закінчена !!!")
-
         } else {
             binding.gameField.alpha = 1F
             binding.gameField.scaleX = 1F
@@ -234,14 +219,13 @@ class GameFragment(
     }
 
     private fun goToListPlayersFragment() {
+        arguments = Bundle().apply {
+            putString(KEY_USER_NAME, userModelPreferences.name)
+        }
         requireActivity().supportFragmentManager
             .beginTransaction()
             .addToBackStack(null)
-            .replace(
-                R.id.container, ListPlayersFragment.newInstance(
-                    userModelPreferences.name
-                )
-            )
+            .replace(R.id.container, ListPlayersFragment::class.java, arguments)
             .commit()
     }
 

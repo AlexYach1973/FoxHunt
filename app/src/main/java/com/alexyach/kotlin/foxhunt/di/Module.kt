@@ -10,6 +10,7 @@ import com.alexyach.kotlin.foxhunt.domain.FoxHuntGame
 import com.alexyach.kotlin.foxhunt.domain.repository.IAWSStorage
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.GameFragment
 import com.alexyach.kotlin.foxhunt.presentation.ui.gamefragment.GameViewModel
+import com.alexyach.kotlin.foxhunt.presentation.ui.listplayers.ListPlayersFragment
 import com.alexyach.kotlin.foxhunt.presentation.ui.listplayers.ListPlayersViewModel
 import com.alexyach.kotlin.foxhunt.presentation.ui.registration.RegistrationFragment
 import com.alexyach.kotlin.foxhunt.presentation.ui.registration.RegistrationViewModel
@@ -19,7 +20,7 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val presentationModule = module {
+val modules = module {
 
     single<DataStore<Preferences>> {
         PreferenceDataStoreFactory.create(
@@ -30,10 +31,6 @@ val presentationModule = module {
     factory <UserDataStore> {
         get()
     }
-
-    /*single<UserDataStore> {
-        UserDataStore(context = get())
-    }*/
 
     factory<FoxHuntGame> {
         FoxHuntGame()
@@ -48,6 +45,9 @@ val presentationModule = module {
     }
     fragment<RegistrationFragment> {
         RegistrationFragment()
+    }
+    fragment<ListPlayersFragment> {
+        ListPlayersFragment()
     }
 
     viewModel<GameViewModel> {

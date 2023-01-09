@@ -21,12 +21,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .add(R.id.container, RegistrationFragment::class.java, null) // через Koin
-//                .add(R.id.container, RegistrationFragment.newInstance())
                 .add(R.id.container, GameFragment::class.java, null) // через Koin
                 .commit()
         }

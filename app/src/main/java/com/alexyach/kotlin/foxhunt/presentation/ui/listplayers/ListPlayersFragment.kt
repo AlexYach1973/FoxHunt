@@ -17,9 +17,6 @@ class ListPlayersFragment : BaseFragment<FragmentListPlayersBinding,
 
     // Створюємо через Koin
     override val viewModel by viewModel<ListPlayersViewModel>()
-    /*override val viewModel: ListPlayersViewModel by lazy {
-        ViewModelProvider(this)[ListPlayersViewModel::class.java]
-    }*/
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -90,14 +87,4 @@ class ListPlayersFragment : BaseFragment<FragmentListPlayersBinding,
         binding.recyclerListPlayers.adapter = adapter
     }
 
-
-    companion object {
-        fun newInstance(name: String) : ListPlayersFragment {
-            return ListPlayersFragment().apply {
-                arguments = Bundle().apply {
-                    putString(KEY_USER_NAME, name)
-                }
-            }
-        }
-    }
 }
